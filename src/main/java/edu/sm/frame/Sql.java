@@ -133,11 +133,16 @@ public class Sql {
             "UPDATE product_inquiry SET answer = ?, answer_date = NOW() WHERE inquiry_id = ?";
 
     // 주문 관리 (OM)
+    public static String insertOrder =
+            "INSERT INTO `order` (cust_id, product_count, price, order_date, name, phone, " +
+                    "address1, address2, zip_code, request, card, used_mileage) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     public static String searchOrders =
-            "SELECT * FROM `order` WHERE cust_id = ? OR name LIKE ? OR phone LIKE ?";
+            "SELECT * FROM `order` WHERE order_id = ?";
 
     public static String listOrders =
-            "SELECT * FROM `order` ORDER BY order_date DESC LIMIT ? OFFSET ?";
+            "SELECT * FROM `order`";
 
     public static String viewOrderDetails =
             "SELECT o.*, od.* FROM `order` o JOIN order_detail od ON o.order_id = od.order_id WHERE o.order_id = ?";
@@ -150,7 +155,9 @@ public class Sql {
 
     public static String editOrder =
             "UPDATE `order` SET product_count = ?, price = ?, name = ?, phone = ?, " +
-                    "address1 = ?, address2 = ?, zip_code = ?, request = ? WHERE order_id = ?";
+                    "address1 = ?, address2 = ?, zip_code = ?, request = ?, card = ?, used_mileage = ? " +
+                    "WHERE order_id = ?";
+
 
     public static String deleteOrder =
             "DELETE FROM `order` WHERE order_id = ?";
