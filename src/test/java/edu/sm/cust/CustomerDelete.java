@@ -5,11 +5,12 @@ import edu.sm.service.CustomerService;
 public class CustomerDelete {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
-        int id = 1; // 가정: 데이터베이스에서 custId는 정수형
+        int id = 6;
         try {
+            System.out.println( "삭제할 고객 이름 : "+ customerService.get(id).getName());
             boolean result = customerService.remove(id);
             if (result) {
-                System.out.println("고객 삭제 성공: " + id);
+                System.out.println("고객 삭제 성공: " + id );
             } else {
                 System.out.println("고객 삭제 실패: " + id);
             }

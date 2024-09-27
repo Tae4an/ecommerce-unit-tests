@@ -5,7 +5,7 @@ import edu.sm.service.CustomerService;
 
 import java.util.List;
 
-public class CustomerSelect {
+public class CustomerListMembers {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
         List<Customer> customers = null;

@@ -4,7 +4,7 @@ package edu.sm.cust;
 import edu.sm.dto.Customer;
 import edu.sm.service.CustomerService;
 
-public class CustomerSelectOne {
+public class CustomerViewMemberDetails {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
         int id = 1;
