@@ -10,7 +10,7 @@ public class CustomerInsert {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
         Customer customer = Customer.builder()
-                .username("id333")
+                .username("id111")
                 .pw("pwd88")
                 .name("taesan")
                 .pNumber("01012345678")
