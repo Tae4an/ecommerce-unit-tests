@@ -2,7 +2,7 @@ package edu.sm.frame;
 
 public class Sql {
     // 회원 관리 (MM)
-    public static String insertCustomer = "INSERT INTO customer (username, pw, name, p_number, signup_date) VALUES (?, ?, ?, ?, ?)";
+    public static String insertCustomer = "INSERT INTO customer (username, pw, name, p_number, signup_date, role) VALUES (?, ?, ?, ?, ?, ?)";
 
     public static String searchMembers =
             "SELECT * FROM customer WHERE username LIKE ? OR name LIKE ? OR p_number LIKE ?";
@@ -61,21 +61,6 @@ public class Sql {
 
     public static String manageShippingSettings =
             "SELECT * FROM shipping_settings";
-
-    public static String manageAdminAccounts =
-            "SELECT * FROM admin_account";
-
-    public static String viewAdminAccounts =
-            "SELECT * FROM admin_account";
-
-    public static String createAdminAccount =
-            "INSERT INTO admin_account (username, password, role) VALUES (?, ?, ?)";
-
-    public static String editAdminAccount =
-            "UPDATE admin_account SET username = ?, password = ?, role = ? WHERE admin_id = ?";
-
-    public static String deleteAdminAccount =
-            "DELETE FROM admin_account WHERE admin_id = ?";
 
     public static String setPaymentFees =
             "UPDATE payment_method SET fee = ? WHERE method_id = ?";
@@ -195,8 +180,6 @@ public class Sql {
     public static String displayProductList =
             "SELECT * FROM product WHERE category_id = ? LIMIT ? OFFSET ?";
 
-    public static String showProductDetails =
-            "SELECT * FROM product WHERE product_id = ?";
 
     public static String displayReviewsAndRatings =
             "SELECT * FROM review WHERE product_id = ?";
@@ -249,8 +232,11 @@ public class Sql {
     public static String managePersonalInfo =
             "SELECT * FROM customer WHERE cust_id = ?";
 
-    public static String manageAddresses =
-            "SELECT * FROM address WHERE cust_id = ?";
+    public static String listAddresses =
+            "SELECT * FROM address";
+    public static String listAddressesDetails =
+            "SELECT * FROM address where address_key =  ?";
+
 
     public static String viewMileageHistory =
             "SELECT * FROM mileage WHERE cust_id = ? UNION ALL SELECT * FROM used_mileage WHERE cust_id = ? ORDER BY date DESC";
@@ -285,7 +271,7 @@ public class Sql {
                     "WHERE address_key = ? AND cust_id = ?";
 
     public static String deleteAddress =
-            "DELETE FROM address WHERE address_key = ? AND cust_id = ?";
+            "DELETE FROM address WHERE address_key = ?";
 
     public static String viewEarnedMileage =
             "SELECT * FROM mileage WHERE cust_id = ? ORDER BY date DESC";
