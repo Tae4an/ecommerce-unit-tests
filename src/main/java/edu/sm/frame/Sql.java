@@ -142,8 +142,8 @@ public class Sql {
     public static String viewOrderDetails =
             "SELECT o.*, od.* FROM `order` o JOIN order_detail od ON o.order_id = od.order_id WHERE o.order_id = ?";
 
-    public static String manageShipping =
-            "SELECT * FROM delivery WHERE order_id = ?";
+    public static String listDelivery =
+            "SELECT * FROM delivery";
 
     public static String managePayments =
             "SELECT * FROM payment WHERE order_id = ?";
@@ -161,7 +161,8 @@ public class Sql {
     public static String editShippingInfo =
             "UPDATE delivery SET status = ?, tracking_number = ?, estimated_delivery = ?, actual_delivery = ? " +
                     "WHERE delivery_id = ?";
-
+    public static String insertDelivery =
+            "INSERT INTO delivery (order_id, status, tracking_number, estimated_delivery, actual_delivery) VALUES (?, ?, ?, ?, ?)";
     public static String viewPaymentHistory =
             "SELECT * FROM payment WHERE order_id = ?";
 
