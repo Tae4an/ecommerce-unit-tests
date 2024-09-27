@@ -99,4 +99,32 @@ public class ProductService implements MService<Integer, Product> {
         }
         return result;
     }
+
+    public List<Product> getPopularProducts() throws Exception {
+        Connection con = cp.getConnection();
+        List<Product> result = null;
+        try {
+            result = dao.getPopularProducts(con);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
+
+    public Product showProductDetails(Integer productId) throws Exception {
+        Connection con = cp.getConnection();
+        Product result = null;
+        try {
+            result = dao.showProductDetails(productId, con);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
+
+
 }
