@@ -106,7 +106,7 @@ public class Sql {
 
     // 상품 관리 (PM)
     public static String searchProducts =
-            "SELECT * FROM product WHERE name LIKE ? OR description LIKE ?";
+            "SELECT * FROM product WHERE product_id = ?";
 
     public static String listProducts =
             "SELECT * FROM product LIMIT ? OFFSET ?";

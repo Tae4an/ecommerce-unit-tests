@@ -20,9 +20,25 @@ public class ProductRegister {
                 .build();
         try {
             Product addedProduct = productService.add(product);
-            System.out.println("상품 등록 성공: " + addedProduct);
+            System.out.println("┌─────────────────────────────────────────────");
+            System.out.println("│ 상품 등록 성공");
+            System.out.println("├─────────────────────────────────────────────");
+            System.out.println("│ 상품 ID: " + addedProduct.getProductId());
+            System.out.println("│ 상품명: " + addedProduct.getName());
+            System.out.println("│ 가격: " + addedProduct.getPrice() + "원");
+            System.out.println("│ 카테고리 ID: " + addedProduct.getCategoryId());
+            System.out.println("│ 등록일: " + addedProduct.getRegDate());
+            System.out.println("│ 설명: " + addedProduct.getDescription());
+            System.out.println("│ 이미지: " + addedProduct.getImg1());
+            System.out.println("│ 재고: " + addedProduct.getCount() + "개");
+            System.out.println("│ 공개 여부: " + (addedProduct.isPublic() ? "공개" : "비공개"));
+            System.out.println("└─────────────────────────────────────────────");
         } catch (Exception e) {
-            System.out.println("상품 등록 중 오류 발생:");
+            System.out.println("┌─────────────────────────────────────────────");
+            System.out.println("│ 상품 등록 실패");
+            System.out.println("├─────────────────────────────────────────────");
+            System.out.println("│ 오류 메시지: " + e.getMessage());
+            System.out.println("└─────────────────────────────────────────────");
             e.printStackTrace();
         }
     }

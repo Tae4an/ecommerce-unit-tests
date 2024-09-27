@@ -5,7 +5,7 @@ import edu.sm.service.ProductService;
 public class ProductDelete {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
-        int id = 1;
+        int id = 18;
         try {
             boolean result = productService.remove(id);
             if (result) {
