@@ -180,8 +180,6 @@ public class Sql {
     public static String displayProductList =
             "SELECT * FROM product WHERE category_id = ? LIMIT ? OFFSET ?";
 
-    public static String showProductDetails =
-            "SELECT * FROM product WHERE product_id = ?";
 
     public static String displayReviewsAndRatings =
             "SELECT * FROM review WHERE product_id = ?";
@@ -234,8 +232,11 @@ public class Sql {
     public static String managePersonalInfo =
             "SELECT * FROM customer WHERE cust_id = ?";
 
-    public static String manageAddresses =
-            "SELECT * FROM address WHERE cust_id = ?";
+    public static String listAddresses =
+            "SELECT * FROM address";
+    public static String listAddressesDetails =
+            "SELECT * FROM address where address_key =  ?";
+
 
     public static String viewMileageHistory =
             "SELECT * FROM mileage WHERE cust_id = ? UNION ALL SELECT * FROM used_mileage WHERE cust_id = ? ORDER BY date DESC";
@@ -270,7 +271,7 @@ public class Sql {
                     "WHERE address_key = ? AND cust_id = ?";
 
     public static String deleteAddress =
-            "DELETE FROM address WHERE address_key = ? AND cust_id = ?";
+            "DELETE FROM address WHERE address_key = ?";
 
     public static String viewEarnedMileage =
             "SELECT * FROM mileage WHERE cust_id = ? ORDER BY date DESC";
