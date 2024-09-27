@@ -4,19 +4,18 @@ import edu.sm.dto.Product;
 import edu.sm.service.ProductService;
 
 import java.util.Date;
-import java.util.List;
 
-public class ProductInsert {
+public class ProductRegister {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
         Product product = Product.builder()
-                .categoryId(1)
-                .name("테스트 상품")
-                .price(10000)
+                .categoryId(2)
+                .name("아이폰 12 미니")
+                .price(400000)
                 .regDate(new Date())
-                .description("테스트 상품 설명")
-                .img1("test1.jpg")
-                .count(100)
+                .description("애플 스마트폰")
+                .img1("iphone12mini.jpg")
+                .count(1)
                 .isPublic(true)
                 .build();
         try {

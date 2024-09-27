@@ -5,18 +5,18 @@ import edu.sm.service.ProductService;
 
 import java.util.Date;
 
-public class ProductUpdate {
+public class ProductEdit {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
         Product product = Product.builder()
-                .productId(1)
-                .categoryId(1)
-                .name("수정된 상품")
-                .price(15000)
+                .productId(17)
+                .categoryId(15)
+                .name("종의기원")
+                .price(13000)
                 .regDate(new Date())
-                .description("수정된 상품 설명")
-                .img1("updated1.jpg")
-                .count(50)
+                .description("정유정 장편 소설")
+                .img1("originofspecies.jpg")
+                .count(10)
                 .isPublic(true)
                 .build();
         try {

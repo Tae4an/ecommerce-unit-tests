@@ -94,7 +94,7 @@ public class ProductDao implements Dao<Integer, Product> {
         ResultSet rs = null;
         Product product = null;
         try {
-            pstmt = conn.prepareStatement(Sql.viewProductDetails);
+            pstmt = conn.prepareStatement(Sql.searchProducts);
             pstmt.setInt(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -128,7 +128,7 @@ public class ProductDao implements Dao<Integer, Product> {
         List<Product> products = new ArrayList<>();
         try {
             pstmt = conn.prepareStatement(Sql.listProducts);
-            pstmt.setInt(1, 10); // 예시로 10개씩 조회
+            pstmt.setInt(1, 20); // 예시로 10개씩 조회
             pstmt.setInt(2, 0);  // 첫 페이지
             rs = pstmt.executeQuery();
             while (rs.next()) {
@@ -219,40 +219,6 @@ public class ProductDao implements Dao<Integer, Product> {
             if (pstmt != null) pstmt.close();
         }
         return product;
-    }
-
-    // 새로운 메서드: 상품 검색
-    public List<Product> searchProducts(String keyword, Connection conn) throws Exception {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<Product> products = new ArrayList<>();
-        try {
-            pstmt = conn.prepareStatement(Sql.searchProducts);
-            pstmt.setString(1, "%" + keyword + "%");
-            pstmt.setString(2, "%" + keyword + "%");
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                products.add(new Product(
-                        rs.getInt("product_id"),
-                        rs.getInt("category_id"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getDate("reg_date"),
-                        rs.getString("description"),
-                        rs.getString("img1"),
-                        rs.getString("img2"),
-                        rs.getString("img3"),
-                        rs.getString("img4"),
-                        rs.getString("img5"),
-                        rs.getInt("count"),
-                        rs.getBoolean("is_public")
-                ));
-            }
-        } finally {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-        }
-        return products;
     }
 
     // 새로운 메서드: 상품 상태 변경

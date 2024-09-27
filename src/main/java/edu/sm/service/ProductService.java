@@ -126,5 +126,4 @@ public class ProductService implements MService<Integer, Product> {
         return result;
     }
 
-
 }

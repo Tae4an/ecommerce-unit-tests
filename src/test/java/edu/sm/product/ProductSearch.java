@@ -3,10 +3,10 @@ package edu.sm.product;
 import edu.sm.dto.Product;
 import edu.sm.service.ProductService;
 
-public class ProductSelectOne {
+public class ProductSearch {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
-        int id = 1;
+        int id = 4;
         try {
             Product product = productService.get(id);
             if (product != null) {
