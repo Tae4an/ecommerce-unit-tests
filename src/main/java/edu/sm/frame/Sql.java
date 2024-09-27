@@ -2,7 +2,7 @@ package edu.sm.frame;
 
 public class Sql {
     // 회원 관리 (MM)
-    public static String insertCustomer = "INSERT INTO customer (username, pw, name, p_number, signup_date) VALUES (?, ?, ?, ?, ?)";
+    public static String insertCustomer = "INSERT INTO customer (username, pw, name, p_number, signup_date, role) VALUES (?, ?, ?, ?, ?, ?)";
 
     public static String searchMembers =
             "SELECT * FROM customer WHERE username LIKE ? OR name LIKE ? OR p_number LIKE ?";
@@ -61,21 +61,6 @@ public class Sql {
 
     public static String manageShippingSettings =
             "SELECT * FROM shipping_settings";
-
-    public static String manageAdminAccounts =
-            "SELECT * FROM admin_account";
-
-    public static String viewAdminAccounts =
-            "SELECT * FROM admin_account";
-
-    public static String createAdminAccount =
-            "INSERT INTO admin_account (username, password, role) VALUES (?, ?, ?)";
-
-    public static String editAdminAccount =
-            "UPDATE admin_account SET username = ?, password = ?, role = ? WHERE admin_id = ?";
-
-    public static String deleteAdminAccount =
-            "DELETE FROM admin_account WHERE admin_id = ?";
 
     public static String setPaymentFees =
             "UPDATE payment_method SET fee = ? WHERE method_id = ?";

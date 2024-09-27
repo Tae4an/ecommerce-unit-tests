@@ -21,6 +21,7 @@ public class CustomerDao implements Dao<Integer, Customer> {
             pstmt.setString(3, customer.getName());
             pstmt.setString(4, customer.getPNumber());
             pstmt.setDate(5, new java.sql.Date(customer.getSignUpDate().getTime()));
+            pstmt.setString(6,"CUST");
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -91,7 +92,8 @@ public class CustomerDao implements Dao<Integer, Customer> {
                         rs.getString("pw"),
                         rs.getString("name"),
                         rs.getString("p_number"),
-                        rs.getDate("signup_date")
+                        rs.getDate("signup_date"),
+                        rs.getString("role")
                 );
             }
         } finally {
@@ -118,7 +120,8 @@ public class CustomerDao implements Dao<Integer, Customer> {
                         rs.getString("pw"),
                         rs.getString("name"),
                         rs.getString("p_number"),
-                        rs.getDate("signup_date")
+                        rs.getDate("signup_date"),
+                        rs.getString("role")
                 ));
             }
         } finally {
@@ -145,7 +148,8 @@ public class CustomerDao implements Dao<Integer, Customer> {
                         rs.getString("pw"),
                         rs.getString("name"),
                         rs.getString("p_number"),
-                        rs.getDate("signup_date")
+                        rs.getDate("signup_date"),
+                        rs.getString("role")
                 ));
             }
         } finally {

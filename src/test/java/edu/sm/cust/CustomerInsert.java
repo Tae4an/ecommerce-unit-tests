@@ -15,6 +15,7 @@ public class CustomerInsert {
                 .name("신승민")
                 .pNumber("010-3201-4202")
                 .signUpDate(new Date())
+                .role("CUST")
                 .build();
         try {
             Customer addedCustomer = customerService.add(customer);

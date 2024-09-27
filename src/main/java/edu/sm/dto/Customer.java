@@ -15,4 +15,5 @@ public class Customer {
     private String name;
     private String pNumber;
     private Date signUpDate;
+    private String role;
 }
