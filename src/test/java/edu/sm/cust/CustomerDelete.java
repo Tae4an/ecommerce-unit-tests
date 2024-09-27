@@ -5,7 +5,7 @@ import edu.sm.service.CustomerService;
 public class CustomerDelete {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
-        int id = 88; // 가정: 데이터베이스에서 custId는 정수형
+        int id = 1; // 가정: 데이터베이스에서 custId는 정수형
         try {
             boolean result = customerService.remove(id);
             if (result) {
