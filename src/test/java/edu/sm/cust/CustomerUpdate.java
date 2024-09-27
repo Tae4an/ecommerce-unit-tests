@@ -9,11 +9,11 @@ public class CustomerUpdate {
     public static void main(String[] args) {
         CustomerService customerService = new CustomerService();
         Customer customer = Customer.builder()
-                .custId(88)
-                .username("id88")
-                .pw("pwd888")
-                .name("홍말자")
-                .pNumber("01087654321")
+                .custId(6) // 변경하고 싶은 유저의 아이디(PK)
+                .username("user6") // 새로운 유저 아이디
+                .pw("pass112") // 새로운 패스워드 (아래 위와 동)
+                .name("김철수")
+                .pNumber("010-2121-3211")
                 .signUpDate(new Date())
                 .build();
         try {

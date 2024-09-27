@@ -97,4 +97,16 @@ public class CustomerService implements MService<Integer, Customer> {
         }
         return result;
     }
+    public List<Customer> searchMembers(String keyword) throws Exception {
+        Connection con = cp.getConnection();
+        List<Customer> result = null;
+        try {
+            result = dao.searchMembers(keyword, con);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
 }

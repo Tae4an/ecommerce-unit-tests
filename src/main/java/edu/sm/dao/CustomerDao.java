@@ -128,7 +128,6 @@ public class CustomerDao implements Dao<Integer, Customer> {
         return customers;
     }
 
-    // 새로운 메서드: 회원 검색
     public List<Customer> searchMembers(String keyword, Connection conn) throws Exception {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
