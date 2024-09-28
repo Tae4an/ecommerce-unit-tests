@@ -211,6 +211,25 @@ public class Sql {
             "DELETE FROM product_inquiry WHERE inquiry_id = ? AND cust_id = ?";
 
     // 장바구니 (CT)
+
+    // 장바구니 (Cart) 관련 쿼리
+    public static String insertCart =
+            "INSERT INTO cart (cust_id, product_id, count, reg_date) VALUES (?, ?, ?, ?)";
+
+    public static String updateCart =
+            "UPDATE cart SET count = ? WHERE cart_id = ?";
+
+    public static String deleteCart =
+            "DELETE FROM cart WHERE cart_id = ?";
+
+    public static String selectCart =
+            "SELECT * FROM cart WHERE cart_id = ?";
+
+    public static String selectAllCarts =
+            "SELECT * FROM cart";
+
+    public static String selectCartsByCustomer =
+            "SELECT * FROM cart WHERE cust_id = ?";
     public static String displayCartList =
             "SELECT c.*, p.name, p.price FROM cart c JOIN product p ON c.product_id = p.product_id WHERE c.cust_id = ?";
 
@@ -232,6 +251,7 @@ public class Sql {
 
     public static String confirmOrder =
             "SELECT * FROM `order` WHERE order_id = ?";
+
 
     // 마이페이지 (MP)
     public static String viewOrderHistory =
