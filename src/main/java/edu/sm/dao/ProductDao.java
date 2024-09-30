@@ -151,40 +151,7 @@ public class ProductDao implements Dao<Integer, Product> {
         return products;
     }
 
-    // 새로은 메서드: 상품 상세 정보 표시 기능
-    public Product showProductDetails(Integer productId, Connection conn) throws Exception {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Product product = null;
-        try {
-            pstmt = conn.prepareStatement(Sql.showProductDetails);
-            pstmt.setInt(1, productId);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                product = new Product(
-                        rs.getInt("product_id"),
-                        rs.getInt("category_id"),
-                        rs.getString("name"),
-                        rs.getInt("price"),
-                        rs.getDate("reg_date"),
-                        rs.getString("description"),
-                        rs.getString("img1"),
-                        rs.getString("img2"),
-                        rs.getString("img3"),
-                        rs.getString("img4"),
-                        rs.getString("img5"),
-                        rs.getInt("count"),
-                        rs.getBoolean("is_public")
-                );
-            }
-        } finally {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-        }
-        return product;
-    }
 
-    // 새로운 메서드: 상품 상태 변경
     public boolean changeProductStatus(int productId, boolean isPublic, Connection conn) throws Exception {
         PreparedStatement pstmt = null;
         try {
