@@ -61,7 +61,7 @@ public class ProductService implements MService<Integer, Product> {
         Boolean result = false;
         try {
             con.setAutoCommit(false);
-            result = dao.delete(id, con);
+            result = dao.changeProductStatus(id, false, con);
             con.commit();
         } catch (Exception e) {
             con.rollback();
@@ -99,4 +99,37 @@ public class ProductService implements MService<Integer, Product> {
         }
         return result;
     }
+
+    public Product showProductDetails(Integer productId) throws Exception {
+        Connection con = cp.getConnection();
+        Product result = null;
+        try {
+            result = dao.showProductDetails(productId, con);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
+
+    public Boolean toggleProductStatus(Integer id) throws Exception {
+        Connection con = cp.getConnection();
+        Boolean result = false;
+        try {
+            con.setAutoCommit(false);
+            Product product = dao.select(id, con);
+            if (product != null) {
+                result = dao.changeProductStatus(id, !product.isPublic(), con);
+            }
+            con.commit();
+        } catch (Exception e) {
+            con.rollback();
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
+
 }
