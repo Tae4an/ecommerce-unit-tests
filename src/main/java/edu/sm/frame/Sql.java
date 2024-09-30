@@ -94,7 +94,6 @@ public class Sql {
             "INSERT INTO product (category_id, name, price, reg_date, description, img1, img2, img3, img4, img5, count, is_public) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-
     public static String editProduct =
             "UPDATE product SET category_id = ?, name = ?, price = ?, description = ?, " +
                     "img1 = ?, img2 = ?, img3 = ?, img4 = ?, img5 = ?, count = ?, is_public = ? " +
@@ -125,6 +124,7 @@ public class Sql {
     public static String listOrders =
             "SELECT * FROM `order`";
 
+
     public static String listDelivery =
             "SELECT * FROM delivery";
 
@@ -147,7 +147,6 @@ public class Sql {
     public static String insertDelivery =
             "INSERT INTO delivery (order_id, status, tracking_number, estimated_delivery, actual_delivery) VALUES (?, ?, ?, ?, ?)";
 
-
     // OrderDetail 관련 쿼리
     public static String insertOrderDetail =
             "INSERT INTO order_detail (product_id, order_id, price, count) VALUES (?, ?, ?, ?)";
@@ -163,6 +162,7 @@ public class Sql {
 
     public static String selectAllOrderDetails =
             "SELECT * FROM order_detail";
+
 
     // 장바구니 (Cart) 관련 쿼리
     public static String insertCart =
@@ -285,4 +285,5 @@ public class Sql {
 
     public static String selectAllWishes =
             "SELECT * FROM wish";
+
 }
