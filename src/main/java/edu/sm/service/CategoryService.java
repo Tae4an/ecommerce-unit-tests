@@ -77,12 +77,22 @@ public class CategoryService implements MService<Integer, Category> {
     }
 
     @Override
-    public Category get(Integer integer) throws Exception {
-        return null;
+    public Category get(Integer id) throws Exception {
+        Connection con = cp.getConnection();
+        try {
+            return dao.select(id, con);
+        } finally {
+            cp.releaseConnection(con);
+        }
     }
 
     @Override
     public List<Category> get() throws Exception {
-        return List.of();
+        Connection con = cp.getConnection();
+        try {
+            return dao.select(con);
+        } finally {
+            cp.releaseConnection(con);
+        }
     }
 }

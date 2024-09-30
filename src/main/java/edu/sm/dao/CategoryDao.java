@@ -5,6 +5,7 @@ import edu.sm.frame.Dao;
 import edu.sm.frame.Sql;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDao implements Dao<Integer, Category> {
@@ -71,12 +72,48 @@ public class CategoryDao implements Dao<Integer, Category> {
     }
 
     @Override
-    public Category select(Integer integer, Connection conn) throws Exception {
-        return null;
+    public Category select(Integer id, Connection conn) throws Exception {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Category category = null;
+        try {
+            pstmt = conn.prepareStatement(Sql.selectCategory);
+            pstmt.setInt(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                category = Category.builder()
+                        .categoryId(rs.getInt("category_id"))
+                        .name(rs.getString("name"))
+                        .categoryId2(rs.getInt("category_id2"))
+                        .build();
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+        }
+        return category;
     }
 
     @Override
     public List<Category> select(Connection conn) throws Exception {
-        return List.of();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Category> categories = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(Sql.selectAllCategories);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Category category = Category.builder()
+                        .categoryId(rs.getInt("category_id"))
+                        .name(rs.getString("name"))
+                        .categoryId2(rs.getInt("category_id2"))
+                        .build();
+                categories.add(category);
+            }
+        } finally {
+            if (rs != null) rs.close();
+            if (pstmt != null) pstmt.close();
+        }
+        return categories;
     }
 }

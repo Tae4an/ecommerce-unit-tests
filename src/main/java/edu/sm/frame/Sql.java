@@ -286,4 +286,7 @@ public class Sql {
     public static String selectAllWishes =
             "SELECT * FROM wish";
 
+    public static String selectCategory = "SELECT category_id, name, category_id2 FROM category WHERE category_id = ?";
+    public static String selectAllCategories = "SELECT category_id, name, category_id2 FROM category";
+
 }
