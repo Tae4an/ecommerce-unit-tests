@@ -38,6 +38,7 @@ public class CategoryDelete {
             System.out.println("│ 카테고리 삭제 실패");
             System.out.println("├─────────────────────────────────────────────");
             System.out.println("│ 오류 메시지: " + e.getMessage());
+            System.out.println("│ 오류 타입: " + e.getClass().getName());
             System.out.println("└─────────────────────────────────────────────");
             e.printStackTrace();
         } finally {

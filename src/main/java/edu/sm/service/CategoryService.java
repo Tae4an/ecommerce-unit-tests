@@ -62,6 +62,11 @@ public class CategoryService implements MService<Integer, Category> {
         try {
             con.setAutoCommit(false);
             result = dao.delete(integer, con);
+            if (result) {
+                con.commit();  // 성공 시 커밋
+            } else {
+                con.rollback();  // 실패 시 롤백
+            }
         } catch (Exception e) {
             con.rollback();
             throw e;

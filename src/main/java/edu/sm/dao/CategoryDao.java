@@ -63,6 +63,7 @@ public class CategoryDao implements Dao<Integer, Category> {
             pstmt.setInt(1, id);
 
             int affectedRows = pstmt.executeUpdate();
+            System.out.println("Affected rows: " + affectedRows);  // 로깅 추가
             return affectedRows > 0;
         } finally {
             if (pstmt != null) pstmt.close();
