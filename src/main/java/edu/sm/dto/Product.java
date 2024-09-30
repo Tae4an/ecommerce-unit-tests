@@ -12,10 +12,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Product {
-    private int productId;
-    private int categoryId;
+    private Integer productId;
+    private Integer categoryId;
     private String name;
-    private int price;
+    private Integer price;
     private Date regDate;
     private String description;
     private String img1;
@@ -23,6 +23,6 @@ public class Product {
     private String img3;
     private String img4;
     private String img5;
-    private int count;
+    private Integer count;
     private boolean isPublic;
 }

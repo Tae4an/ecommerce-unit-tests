@@ -12,8 +12,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Delivery {
-    private int deliveryId;
-    private int orderId;
+    private Integer deliveryId;
+    private Integer orderId;
     private String status;
     private String trackingNumber;
     private Date  estimatedDelivery;

@@ -9,7 +9,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class Customer {
-    private int custId;
+    private Integer custId;
     private String username;
     private String pw;
     private String name;
