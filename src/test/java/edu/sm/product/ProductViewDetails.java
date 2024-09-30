@@ -3,11 +3,11 @@ package edu.sm.product;
 import edu.sm.dto.Product;
 import edu.sm.service.ProductService;
 
-public class ProductDetails {
+public class ProductViewDetails {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
         try {
-            int productId = 1; // 테스트할 상품 ID
+            int productId = 17; // 테스트할 상품 ID
             Product product = productService.showProductDetails(productId);
             if (product != null) {
                 System.out.println("상품 상세 정보:");
@@ -15,6 +15,7 @@ public class ProductDetails {
                 System.out.println("이름: " + product.getName());
                 System.out.println("가격: " + product.getPrice());
                 System.out.println("설명: " + product.getDescription());
+                System.out.println("사진: " + product.getImg1());
                 // 기타 필요한 정보 출력
             } else {
                 System.out.println("해당 ID의 상품을 찾을 수 없습니다.");
