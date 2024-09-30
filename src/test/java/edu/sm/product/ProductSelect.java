@@ -11,15 +11,15 @@ public class ProductSelect {
         ProductService productService = new ProductService();
         try {
             List<Product> products = productService.get();
-            System.out.println("┌────┬──────────────┬────────┬──────┬──────────┬────┬──────────────┬────┐");
-            System.out.println("│ ID │   상품명     │  가격  │카테고리│  등록일  │재고│    설명     │공개│");
-            System.out.println("├────┼──────────────┼────────┼──────┼──────────┼────┼──────────────┼────┤");
+            System.out.println("┌────┬──────────────┬────────┬────────┬──────────┬────┬──────────────┬────┐");
+            System.out.println("│ ID │   상품명     │카테고리│  가격  │  등록일  │재고│     설명     │공개│");
+            System.out.println("├────┼──────────────┼────────┼────────┼──────────┼────┼──────────────┼────┤");
             for (Product product : products) {
                 System.out.printf("│%3d │%-12s│%8d│%6d│%-10s│%4d│%-12s│%3s│%n",
                         product.getProductId(),
                         truncate(product.getName(), 12),
-                        product.getPrice(),
                         product.getCategoryId(),
+                        product.getPrice(),
                         formatDate(product.getRegDate()),
                         product.getCount(),
                         truncate(product.getDescription(), 12),

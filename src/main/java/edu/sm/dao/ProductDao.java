@@ -19,14 +19,15 @@ public class ProductDao implements Dao<Integer, Product> {
             pstmt.setInt(1, product.getCategoryId());
             pstmt.setString(2, product.getName());
             pstmt.setInt(3, product.getPrice());
-            pstmt.setString(4, product.getDescription());
-            pstmt.setString(5, product.getImg1());
-            pstmt.setString(6, product.getImg2());
-            pstmt.setString(7, product.getImg3());
-            pstmt.setString(8, product.getImg4());
-            pstmt.setString(9, product.getImg5());
-            pstmt.setInt(10, product.getCount());
-            pstmt.setBoolean(11, product.isPublic());
+            pstmt.setTimestamp(4, new java.sql.Timestamp(product.getRegDate().getTime()));
+            pstmt.setString(5, product.getDescription());
+            pstmt.setString(6, product.getImg1());
+            pstmt.setString(7, product.getImg2());
+            pstmt.setString(8, product.getImg3());
+            pstmt.setString(9, product.getImg4());
+            pstmt.setString(10, product.getImg5());
+            pstmt.setInt(11, product.getCount());
+            pstmt.setBoolean(12, product.isPublic());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -100,7 +101,7 @@ public class ProductDao implements Dao<Integer, Product> {
                             rs.getInt("category_id"),
                             rs.getString("name"),
                             rs.getInt("price"),
-                            rs.getDate("reg_date"),
+                            rs.getTimestamp("reg_date"),
                             rs.getString("description"),
                             rs.getString("img1"),
                             rs.getString("img2"),
@@ -132,7 +133,7 @@ public class ProductDao implements Dao<Integer, Product> {
                         rs.getInt("category_id"),
                         rs.getString("name"),
                         rs.getInt("price"),
-                        rs.getDate("reg_date"),
+                        rs.getTimestamp("reg_date"),
                         rs.getString("description"),
                         rs.getString("img1"),
                         rs.getString("img2"),

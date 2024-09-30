@@ -3,11 +3,13 @@ package edu.sm.product;
 import edu.sm.dto.Product;
 import edu.sm.service.ProductService;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProductRegister {
     public static void main(String[] args) {
         ProductService productService = new ProductService();
+
         Product product = Product.builder()
                 .categoryId(2)
                 .name("아이폰 12 미니")
@@ -20,6 +22,7 @@ public class ProductRegister {
                 .build();
         try {
             Product addedProduct = productService.add(product);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println("┌─────────────────────────────────────────────");
             System.out.println("│ 상품 등록 성공");
             System.out.println("├─────────────────────────────────────────────");
@@ -27,7 +30,7 @@ public class ProductRegister {
             System.out.println("│ 상품명: " + addedProduct.getName());
             System.out.println("│ 가격: " + addedProduct.getPrice() + "원");
             System.out.println("│ 카테고리 ID: " + addedProduct.getCategoryId());
-            System.out.println("│ 등록일: " + addedProduct.getRegDate());
+            System.out.println("│ 등록일: " + sdf.format(addedProduct.getRegDate()) );
             System.out.println("│ 설명: " + addedProduct.getDescription());
             System.out.println("│ 이미지: " + addedProduct.getImg1());
             System.out.println("│ 재고: " + addedProduct.getCount() + "개");

@@ -112,8 +112,8 @@ public class Sql {
             "SELECT * FROM product LIMIT ? OFFSET ?";
 
     public static String registerProduct =
-            "INSERT INTO product (category_id, name, price, description, img1, img2, img3, img4, img5, count, is_public) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "INSERT INTO product (category_id, name, price, reg_date, description, img1, img2, img3, img4, img5, count, is_public) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static String manageCategories =
             "SELECT * FROM category";
