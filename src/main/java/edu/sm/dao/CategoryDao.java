@@ -15,9 +15,8 @@ public class CategoryDao implements Dao<Integer, Category> {
         ResultSet rs = null;
         try {
             pstmt = conn.prepareStatement(Sql.addCategory, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, category.getCategoryId());
-            pstmt.setInt(2, category.getCategoryId2());
-            pstmt.setString(3, category.getName());
+            pstmt.setString(1, category.getName());
+            pstmt.setInt(2, category.getCategoryId2());  // parent_id에 해당
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -41,10 +40,10 @@ public class CategoryDao implements Dao<Integer, Category> {
     public Category update(Category category, Connection conn) throws Exception {
         PreparedStatement pstmt = null;
         try {
-            pstmt = conn.prepareStatement(Sql.editProduct);
-            pstmt.setInt(1, category.getCategoryId());
+            pstmt = conn.prepareStatement(Sql.editCategory);
+            pstmt.setString(1, category.getName());
             pstmt.setInt(2, category.getCategoryId2());
-            pstmt.setString(3, category.getName());
+            pstmt.setInt(3, category.getCategoryId());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {

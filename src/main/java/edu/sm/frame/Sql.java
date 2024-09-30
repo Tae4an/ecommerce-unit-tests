@@ -133,10 +133,10 @@ public class Sql {
             "UPDATE product SET is_public = ? WHERE product_id = ?";
 
     public static String addCategory =
-            "INSERT INTO category (name, parent_id) VALUES (?, ?)";
+            "INSERT INTO category (name, category_id2) VALUES (?, ?)";
 
     public static String editCategory =
-            "UPDATE category SET name = ?, parent_id = ? WHERE category_id = ?";
+            "UPDATE category SET name = ?, category_id2 = ? WHERE category_id = ?";
 
     public static String deleteCategory =
             "DELETE FROM category WHERE category_id = ?";

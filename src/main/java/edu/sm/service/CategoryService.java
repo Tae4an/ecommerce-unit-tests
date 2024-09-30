@@ -41,12 +41,34 @@ public class CategoryService implements MService<Integer, Category> {
 
     @Override
     public Category modify(Category category) throws Exception {
-        return null;
+        Connection con = cp.getConnection();
+        try {
+            con.setAutoCommit(false);
+            category = dao.update(category, con);
+            con.commit();
+        } catch (Exception e) {
+            con.rollback();
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return category;
     }
 
     @Override
     public Boolean remove(Integer integer) throws Exception {
-        return null;
+        Connection con = cp.getConnection();
+        Boolean result = false;
+        try {
+            con.setAutoCommit(false);
+            result = dao.delete(integer, con);
+        } catch (Exception e) {
+            con.rollback();
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
     }
 
     @Override

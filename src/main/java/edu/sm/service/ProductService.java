@@ -113,4 +113,23 @@ public class ProductService implements MService<Integer, Product> {
         return result;
     }
 
+    public Boolean toggleProductStatus(Integer id) throws Exception {
+        Connection con = cp.getConnection();
+        Boolean result = false;
+        try {
+            con.setAutoCommit(false);
+            Product product = dao.select(id, con);
+            if (product != null) {
+                result = dao.changeProductStatus(id, !product.isPublic(), con);
+            }
+            con.commit();
+        } catch (Exception e) {
+            con.rollback();
+            throw e;
+        } finally {
+            cp.releaseConnection(con);
+        }
+        return result;
+    }
+
 }
