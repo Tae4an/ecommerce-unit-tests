@@ -20,37 +20,71 @@ public class Sql {
             "DELETE FROM customer WHERE cust_id = ?";
 
     // 통계 및 분석 (SA)
-    public static String viewSalesStatistics =
-            "SELECT DATE(order_date) as date, SUM(price) as total_sales FROM `order` GROUP BY DATE(order_date)";
 
-    public static String listSalesStatistics =
-            "SELECT DATE(order_date) as date, SUM(price) as total_sales FROM `order` GROUP BY DATE(order_date) ORDER BY ? ?";
 
-    public static String viewSalesDetails =
-            "SELECT * FROM `order` WHERE DATE(order_date) = ?";
+    public static String selectViewSalesStatistics =
+            "SELECT * FROM sales_statistics";
 
-    public static String analyzeProducts =
-            "SELECT p.product_id, p.name, COUNT(od.product_id) as sales_count, SUM(od.price) as total_sales " +
-                    "FROM product p LEFT JOIN order_detail od ON p.product_id = od.product_id " +
-                    "GROUP BY p.product_id, p.name";
+    public static String selectAnalyzeCustomers =
+            "SELECT * FROM customer_analysis";
 
-    public static String viewPopularProducts =
-            "SELECT p.product_id, p.name, COUNT(od.product_id) as sales_count " +
-                    "FROM product p LEFT JOIN order_detail od ON p.product_id = od.product_id " +
-                    "GROUP BY p.product_id, p.name ORDER BY sales_count DESC LIMIT 10";
+    public static String selectAnalyzeProducts =
+            "SELECT * FROM product_analysis";
 
-    public static String analyzeCustomers =
-            "SELECT c.cust_id, c.name, COUNT(o.order_id) as order_count, SUM(o.price) as total_spent " +
-                    "FROM customer c LEFT JOIN `order` o ON c.cust_id = o.cust_id " +
-                    "GROUP BY c.cust_id, c.name";
 
-    public static String viewCustomerPurchasePatterns =
-            "SELECT c.cust_id, c.name, p.category_id, COUNT(od.product_id) as purchase_count " +
+    public static String performProductAnalysis =
+            "INSERT INTO product_analysis (product_id, sales_count, total_revenue, avg_rate) " +
+                    "SELECT p.product_id, COUNT(od.product_id) as sales_count,ifnull(SUM(od.price),0) as total_revenue, ifnull(AVG(b.rate) ,0) as avg_rate " +
+                    "FROM product p " +
+                    "LEFT JOIN order_detail od ON p.product_id = od.product_id " +
+                    "LEFT JOIN board b ON p.product_id = b.product_id " +
+                    "GROUP BY p.product_id";
+
+    public static String performCustomerAnalysis =
+            "INSERT INTO customer_analysis (cust_id, total_orders, total_spent, favorite_category_id) " +
+                    "SELECT c.cust_id, COUNT(o.order_id) as total_orders, SUM(o.price) as total_spent, " +
+                    "ifnull((SELECT category_id FROM " +
+                    "   (SELECT p.category_id, COUNT(*) as category_count " +
+                    "    FROM `order` o " +
+                    "    JOIN order_detail od ON o.order_id = od.order_id " +
+                    "    JOIN product p ON od.product_id = p.product_id " +
+                    "    WHERE o.cust_id = c.cust_id " +
+                    "    GROUP BY p.category_id " +
+                    "    ORDER BY category_count DESC " +
+                    "    LIMIT 1) as subquery),0) as favorite_category_id " +
                     "FROM customer c " +
-                    "JOIN `order` o ON c.cust_id = o.cust_id " +
-                    "JOIN order_detail od ON o.order_id = od.order_id " +
-                    "JOIN product p ON od.product_id = p.product_id " +
-                    "GROUP BY c.cust_id, c.name, p.category_id";
+                    "LEFT JOIN `order` o ON c.cust_id = o.cust_id " +
+                    "GROUP BY c.cust_id";
+
+    public static String performSalesStatistics =
+            "INSERT INTO sales_statistics (date, total_sales, order_count, avg_order_value) " +
+                    "SELECT DATE(order_date) as date, SUM(price) as total_sales, COUNT(*) as order_count, " +
+                    "AVG(price) as avg_order_value " +
+                    "FROM `order` " +
+                    "GROUP BY DATE(order_date)";
+
+    public static String performDailySalesStatistics =
+            "INSERT INTO sales_statistics (date, total_sales, order_count, avg_order_value) " +
+                    "SELECT DATE(order_date) as date, SUM(price) as total_sales, COUNT(*) as order_count, " +
+                    "AVG(price) as avg_order_value " +
+                    "FROM `order` " +
+                    "GROUP BY DATE(order_date)";
+
+    public static String performMonthlySalesStatistics =
+            "INSERT INTO monthly_sales_statistics (month, total_sales, order_count, avg_order_value) " +
+                    "SELECT DATE_FORMAT(order_date, '%Y-%m') as month, SUM(price) as total_sales, " +
+                    "COUNT(*) as order_count, AVG(price) as avg_order_value " +
+                    "FROM `order` " +
+                    "GROUP BY DATE_FORMAT(order_date, '%Y-%m')";
+
+    public static String performYearlySalesStatistics =
+            "INSERT INTO yearly_sales_statistics (year, total_sales, order_count, avg_order_value) " +
+                    "SELECT YEAR(order_date) as year, SUM(price) as total_sales, COUNT(*) as order_count, " +
+                    "AVG(price) as avg_order_value " +
+                    "FROM `order` " +
+                    "GROUP BY YEAR(order_date)";
+
+
 
     // 시스템 설정 (SS)
     public static String manageGeneralSettings =
@@ -175,6 +209,22 @@ public class Sql {
 
     public static String processRefund =
             "INSERT INTO refund (order_id, amount, reason) VALUES (?, ?, ?)";
+
+    // OrderDetail 관련 쿼리
+    public static String insertOrderDetail =
+            "INSERT INTO order_detail (product_id, order_id, price, count) VALUES (?, ?, ?, ?)";
+
+    public static String updateOrderDetail =
+            "UPDATE order_detail SET price = ?, count = ? WHERE order_detail_id = ?";
+
+    public static String deleteOrderDetail =
+            "DELETE FROM order_detail WHERE order_detail_id = ?";
+
+    public static String selectOrderDetail =
+            "SELECT * FROM order_detail WHERE order_detail_id = ?";
+
+    public static String selectAllOrderDetails =
+            "SELECT * FROM order_detail";
 
     // 상품 (PD)
     public static String showPopularProducts =
@@ -313,4 +363,95 @@ public class Sql {
     public static String addToCartFromWishList =
             "INSERT INTO cart (cust_id, product_id, count) " +
                     "SELECT cust_id, product_id, 1 FROM wish WHERE wish_id = ? AND cust_id = ?";
+
+
+    // Board 관련 쿼리
+    public static String insertBoard =
+            "INSERT INTO board (cust_id, product_id, ntype, title, reg_date, content, img, rate) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+    public static String updateBoard =
+            "UPDATE board SET title = ?, content = ?, img = ?, rate = ? WHERE board_id = ?";
+
+    public static String deleteBoard =
+            "DELETE FROM board WHERE board_id = ?";
+
+    public static String selectBoard =
+            "SELECT * FROM board WHERE board_id = ?";
+
+    public static String selectAllBoards =
+            "SELECT * FROM board";
+
+    // Payment 관련 쿼리
+    public static String insertPayment =
+            "INSERT INTO payment (order_id, price, method, pay_date) VALUES (?, ?, ?, ?)";
+
+    public static String updatePayment =
+            "UPDATE payment SET price = ?, method = ?, pay_date = ? WHERE payment_id = ?";
+
+    public static String deletePayment =
+            "DELETE FROM payment WHERE payment_id = ?";
+
+    public static String selectPayment =
+            "SELECT * FROM payment WHERE payment_id = ?";
+
+    public static String selectAllPayments =
+            "SELECT * FROM payment";
+
+
+    // Mileage 관련 쿼리
+    public static String insertMileage =
+            "INSERT INTO mileage (cust_id, balance) VALUES (?, ?)";
+
+    public static String updateMileage =
+            "UPDATE mileage SET balance = ? WHERE mileage_id = ?";
+
+    public static String deleteMileage =
+            "DELETE FROM mileage WHERE mileage_id = ?";
+
+    public static String selectMileage =
+            "SELECT * FROM mileage WHERE mileage_id = ?";
+
+    public static String selectAllMileages =
+            "SELECT * FROM mileage";
+
+    public static String selectMileageByCustId =
+            "SELECT * FROM mileage WHERE cust_id = ?";
+
+    // UsedMileage 관련 쿼리
+    public static String insertUsedMileage =
+            "INSERT INTO used_mileage (cust_id, used_date, amount) VALUES (?, ?, ?)";
+
+    public static String updateUsedMileage =
+            "UPDATE used_mileage SET cust_id = ?, used_date = ?, amount = ? WHERE used_mileage_id = ?";
+
+    public static String deleteUsedMileage =
+            "DELETE FROM used_mileage WHERE used_mileage_id = ?";
+
+    public static String selectUsedMileage =
+            "SELECT * FROM used_mileage WHERE used_mileage_id = ?";
+
+    public static String selectAllUsedMileages =
+            "SELECT * FROM used_mileage";
+    // Wish 관련 쿼리
+    public static String insertWish =
+            "INSERT INTO wish (cust_id, product_id, reg_date) VALUES (?, ?, ?)";
+
+    public static String updateWish =
+            "UPDATE wish SET cust_id = ?, product_id = ?, reg_date = ? WHERE wish_id = ?";
+
+    public static String deleteWish =
+            "DELETE FROM wish WHERE wish_id = ?";
+
+    public static String selectWish =
+            "SELECT * FROM wish WHERE wish_id = ?";
+
+    public static String selectAllWishes =
+            "SELECT * FROM wish";
+
+
+
+
+
+
 }
