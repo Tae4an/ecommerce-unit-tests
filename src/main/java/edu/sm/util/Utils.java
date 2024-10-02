@@ -3,6 +3,8 @@ package edu.sm.util;
 import edu.sm.dto.*;
 import edu.sm.service.*;
 
+import java.sql.SQLOutput;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +18,7 @@ public class Utils {
     private static final MileageService mileageService = new MileageService();
     private static final WishService wishService = new WishService();
     private static final Scanner scanner = new Scanner(System.in);
+    private static final ProductService productService = new ProductService();
 
 
 
@@ -370,4 +373,146 @@ public class Utils {
             System.out.println(wish);
         }
     }
+
+    public static void addProduct() throws Exception {
+        System.out.println("상품 추가를 시작합니다.");
+        System.out.println("카테고리 ID: ");
+        Integer categoryId = Integer.parseInt(scanner.nextLine());
+        System.out.println("상품명: ");
+        String name = scanner.nextLine();
+        System.out.println("가격: ");
+        Integer price = Integer.parseInt(scanner.nextLine());
+        String[] images = new String[5];
+        for (int i = 0; i < 5; i++) {
+            System.out.print("이미지 " + (i + 1) + " 경로 (엔터 시 건너뛰기): ");
+            String imagePath = scanner.nextLine().trim();
+            if (imagePath.isEmpty()) {
+                break;
+            }
+            images[i] = imagePath;
+        }
+        System.out.println("설명: ");
+        String description = scanner.nextLine();
+        System.out.println("수량: ");
+        Integer count = Integer.parseInt(scanner.nextLine());
+
+        Product product = Product.builder()
+                .categoryId(categoryId)
+                .name(name)
+                .price(price)
+                .regDate(new Date())
+                .description(description)
+                .img1(images[0])
+                .img2(images[1])
+                .img3(images[2])
+                .img4(images[3])
+                .img5(images[4])
+                .count(count)
+                .isPublic(true)
+                .build();
+
+        product = productService.add(product);
+        System.out.println("상품이 추가되었습니다. 상품 ID: " + product.getProductId());
+    }
+
+    public static void updateProduct() throws Exception {
+        System.out.println("수정할 상품의 ID를 입력하세요: ");
+        Integer productId = Integer.parseInt(scanner.nextLine());
+        Product product = productService.get(productId);
+        if (product == null) {
+            System.out.println("해당 ID의 상품을 찾을 수 없습니다.");
+            return;
+        }
+
+        System.out.print("새 상품명 (엔터 시 변경 없음): ");
+        String name = scanner.nextLine();
+        if (!name.isEmpty()) product.setName(name);
+
+        System.out.print("새 가격 (엔터 시 변경 없음): ");
+        String priceStr = scanner.nextLine();
+        if (!priceStr.isEmpty()) product.setPrice(Integer.parseInt(priceStr));
+
+        System.out.print("새 설명 (엔터 시 변경 없음): ");
+        String description = scanner.nextLine();
+        if (!description.isEmpty()) product.setDescription(description);
+
+        String[] images = new String[5];
+        for (int i = 0; i < 5; i++) {
+            System.out.print("새 이미지 " + (i + 1) + " 경로 (엔터 시 변경 없음): ");
+            String imagePath = scanner.nextLine().trim();
+            if (!imagePath.isEmpty()) {
+                images[i] = imagePath;
+            }
+        }
+
+        if (!images[0].isEmpty()) product.setImg1(images[0]);
+        if (!images[1].isEmpty()) product.setImg2(images[1]);
+        if (!images[2].isEmpty()) product.setImg3(images[2]);
+        if (!images[3].isEmpty()) product.setImg4(images[3]);
+        if (!images[4].isEmpty()) product.setImg5(images[4]);
+
+        System.out.print("새 수량 (엔터 시 변경 없음): ");
+        String countStr = scanner.nextLine();
+        if (!countStr.isEmpty()) product.setCount(Integer.parseInt(countStr));
+
+        product = productService.modify(product);
+        System.out.println("상품 정보가 수정되었습니다.");
+    }
+    public static void listProduct() throws Exception {
+        List<Product> products = productService.get();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        String format = "| %-4s | %-20s | %10s | %-10s | %5s | %-4s | %-8s |\n";
+        System.out.println("+------+----------------------+------------+------------+-------+------+----------+");
+        System.out.format(format, "ID", "상품명", "가격", "등록일", "수량", "공개", "카테고리");
+        System.out.println("+------+----------------------+------------+------------+-------+------+----------+");
+
+        for (Product product : products) {
+            String name = product.getName().length() > 20 ? product.getName().substring(0, 17) + "..." : product.getName();
+            System.out.format(format,
+                    product.getProductId(),
+                    name,
+                    String.format("%,d", product.getPrice()),
+                    dateFormat.format(product.getRegDate()),
+                    product.getCount(),
+                    product.isPublic() ? "O" : "X",
+                    product.getCategoryId());
+        }
+        System.out.println("+------+----------------------+------------+------------+-------+------+----------+");
+    }
+    public static void getProduct() throws Exception {
+        System.out.print("조회할 상품의 ID를 입력하세요: ");
+        Integer productId = Integer.parseInt(scanner.nextLine());
+        Product product = productService.get(productId);
+        if (product != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("상품 ID: " + product.getProductId());
+            System.out.println("카테고리 ID: " + product.getCategoryId());
+            System.out.println("상품명: " + product.getName());
+            System.out.println("가격: " + product.getPrice());
+            System.out.println("등록일: " + dateFormat.format(product.getRegDate()));
+            System.out.println("설명: " + product.getDescription());
+            System.out.println("수량: " + product.getCount());
+            System.out.println("공개 여부: " + (product.isPublic() ? "공개" : "비공개"));
+
+            if (product.getImg1() != null) System.out.println("이미지 1: " + product.getImg1());
+            if (product.getImg2() != null) System.out.println("이미지 2: " + product.getImg2());
+            if (product.getImg3() != null) System.out.println("이미지 3: " + product.getImg3());
+            if (product.getImg4() != null) System.out.println("이미지 4: " + product.getImg4());
+            if (product.getImg5() != null) System.out.println("이미지 5: " + product.getImg5());
+        } else {
+            System.out.println("해당 ID의 상품을 찾을 수 없습니다.");
+        }
+    }
+    public static void toggleProductStatus() throws Exception {
+        System.out.print("상태를 변경할 상품 ID를 입력하세요: ");
+        Integer productId = Integer.parseInt(scanner.nextLine());
+        Boolean result = productService.toggleProductStatus(productId);
+        if (result) {
+            System.out.println("상품 상태가 변경되었습니다.");
+        } else {
+            System.out.println("상품 상태 변경에 실패했습니다.");
+        }
+    }
+
 }
