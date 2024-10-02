@@ -1,2 +1,4 @@
 rootProject.name = 'Shopping_Mall'
+include 'admin'
+include 'service'
 
