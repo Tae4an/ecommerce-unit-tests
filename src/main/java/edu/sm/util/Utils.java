@@ -16,92 +16,8 @@ public class Utils {
     private static final MileageService mileageService = new MileageService();
     private static final WishService wishService = new WishService();
     private static final Scanner scanner = new Scanner(System.in);
-    private static Customer loggedInCustomer = null;
 
-    private static void printGuestMenu() {
-        System.out.println("\n1. 회원가입");
-        System.out.println("2. 로그인");
-        System.out.println("3. 종료");
-        System.out.print("선택: ");
-    }
 
-    private static void printUserMenu() {
-        System.out.println("\n1. 회원 탈퇴");
-        System.out.println("2. 회원 목록 조회");
-        System.out.println("3. 회원 검색");
-        System.out.println("4. 기본 배송지 설정");
-        System.out.println("5. 장바구니에 상품 추가");
-        System.out.println("6. 장바구니 항목 조회");
-        System.out.println("7. 위시리스트에 상품 추가");
-        System.out.println("8. 리뷰 작성");
-        System.out.println("9. 마일리지 확인");
-        System.out.println("10. 배송 상태 확인");
-        System.out.println("11. 로그아웃");
-        System.out.println("12. 종료");
-        System.out.print("선택: ");
-    }
-
-    private static void handleGuestChoice(int choice) throws Exception {
-        switch (choice) {
-            case 1:
-                loggedInCustomer = Utils.registerCustomer();
-                break;
-            case 2:
-                loggedInCustomer = Utils.login();
-                break;
-            case 3:
-                System.out.println("프로그램을 종료합니다.");
-                System.exit(0);
-            default:
-                System.out.println("잘못된 선택입니다.");
-        }
-    }
-
-    private static void handleUserChoice(int choice) throws Exception {
-        switch (choice) {
-            case 1:
-                Utils.deleteCustomer(loggedInCustomer);
-                loggedInCustomer = null;
-                break;
-            case 2:
-                Utils.listCustomers();
-                break;
-            case 3:
-                Utils.searchCustomers();
-                break;
-            case 4:
-                Utils.setDefaultAddress(loggedInCustomer.getCustId());
-                break;
-            case 5:
-                Utils.addToCart(loggedInCustomer);
-                break;
-            case 6:
-                Utils.listCartItems();
-                break;
-            case 7:
-                Utils.addToWishList(loggedInCustomer);
-                break;
-            case 8:
-                Utils.writeReview(loggedInCustomer);
-                break;
-            case 9:
-                Utils.checkMileage(loggedInCustomer);
-                break;
-            case 10:
-                Utils.viewDeliveryStatus(loggedInCustomer);
-                break;
-            case 11:
-                System.out.println("로그아웃 되었습니다.");
-                loggedInCustomer = null;
-                break;
-            case 12:
-                System.out.println("프로그램을 종료합니다.");
-                scanner.close();
-                System.exit(0);
-            default:
-                System.out.println("잘못된 선택입니다.");
-        }
-    }
 
     public static Customer registerCustomer() throws Exception {
         System.out.println("회원가입을 시작합니다.");
@@ -177,6 +93,36 @@ public class Utils {
             System.out.println(customer);
         }
     }
+    public static Customer updateCustomerInfo(Customer customer) throws Exception {
+        System.out.println("회원 정보를 변경하지 않으려면 엔터를 누르세요..");
+
+        System.out.print("새로운 사용자명 (현재: " + customer.getUsername() + "): ");
+        String newUsername = scanner.nextLine();
+        if (!newUsername.isEmpty()) {
+            customer.setUsername(newUsername);
+        }
+
+        System.out.print("새로운 비밀번호: ");
+        String newPassword = scanner.nextLine();
+        if (!newPassword.isEmpty()) {
+            customer.setPw(newPassword);
+        }
+
+        System.out.print("새로운 이름 (현재: " + customer.getName() + "): ");
+        String newName = scanner.nextLine();
+        if (!newName.isEmpty()) {
+            customer.setName(newName);
+        }
+
+        System.out.print("새로운 전화번호 (현재: " + customer.getPNumber() + "): ");
+        String newPhoneNumber = scanner.nextLine();
+        if (!newPhoneNumber.isEmpty()) {
+            customer.setPNumber(newPhoneNumber);
+        }
+
+        return customerService.modify(customer);
+    }
+
     private static Address registerAddress(Integer custId) throws Exception {
         System.out.println("배송지를 등록합니다.");
         System.out.print("받는 사람 이름: ");
@@ -363,21 +309,7 @@ public class Utils {
         }
     }
 
-    public static void viewShippingStatus() throws Exception {
-        System.out.print("배송 상태를 확인할 주문 ID를 입력하세요: ");
-        Integer orderId = Integer.parseInt(scanner.nextLine());
-        Delivery delivery = deliveryService.viewShippingStatus(orderId);
-        System.out.println("배송 상태: " + delivery.getStatus());
-    }
 
-    public static void editShippingInfo() throws Exception {
-        System.out.print("수정할 배송 ID를 입력하세요: ");
-        Integer deliveryId = Integer.parseInt(scanner.nextLine());
-        Delivery delivery = deliveryService.get(deliveryId);
-        // 수정할 정보 입력 받기
-        deliveryService.editShippingInfo(delivery);
-        System.out.println("배송 정보가 수정되었습니다.");
-    }
     public static void updateMileage() throws Exception {
         System.out.print("수정할 마일리지 ID를 입력하세요: ");
         Integer mileageId = Integer.parseInt(scanner.nextLine());
@@ -416,14 +348,7 @@ public class Utils {
         Mileage updatedMileage = mileageService.addMileagePoints(custId, points);
         System.out.println("마일리지가 추가되었습니다. 현재 잔액: " + updatedMileage.getBalance());
     }
-    public static void updateWish() throws Exception {
-        System.out.print("수정할 위시리스트 항목 ID를 입력하세요: ");
-        Integer wishId = Integer.parseInt(scanner.nextLine());
-        Wish wish = wishService.get(wishId);
-        // 수정할 정보 입력 받기
-        wishService.modify(wish);
-        System.out.println("위시리스트 항목이 수정되었습니다.");
-    }
+
 
     public static void removeFromWishList() throws Exception {
         System.out.print("삭제할 위시리스트 항목 ID를 입력하세요: ");
