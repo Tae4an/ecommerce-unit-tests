@@ -3,6 +3,7 @@ package edu.sm.util;
 import edu.sm.dto.*;
 import edu.sm.service.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +18,7 @@ public class Utils {
     private static final OrderService orderService = new OrderService();
     private static final OrderDetailService orderDetailService = new OrderDetailService();
     private static final PaymentService paymentService = new PaymentService();
+    private static final StatisticsAnalysisService statisticsAnalysisService = new StatisticsAnalysisService();
 
 
 
@@ -1246,6 +1248,107 @@ public class Utils {
         }
 
         System.out.println("--------------------------------------------------------------------------------");
+    }
+
+    /**
+     * --------------------------- Statistics Analysis ---------------------------
+     */
+
+    public static void manageStatisticsAnalysis() throws Exception {
+        while (true) {
+            System.out.println("\n===== 통계 분석 관리 =====");
+            System.out.println("1. 고객 분석 수행");
+            System.out.println("2. 상품 분석 수행");
+            System.out.println("3. 일별 매출 통계 수행");
+            System.out.println("4. 월별 매출 통계 수행");
+            System.out.println("5. 연도별 매출 통계 수행");
+            System.out.println("6. 고객 분석 결과 조회");
+            System.out.println("7. 상품 분석 결과 조회");
+            System.out.println("8. 일별 매출 통계 조회");
+            System.out.println("9. 월별 매출 통계 조회");
+            System.out.println("10. 연도별 매출 통계 조회");
+            System.out.println("11. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> performCustomerAnalysis();
+                case 2 -> performProductAnalysis();
+                case 3 -> performDailySalesStatistics();
+                case 4 -> performMonthlySalesStatistics();
+                case 5 -> performYearlySalesStatistics();
+                case 6 -> viewCustomerAnalysis();
+                case 7 -> viewProductAnalysis();
+                case 8 -> viewDailySalesStatistics();
+                case 9 -> viewMonthlySalesStatistics();
+                case 10 -> viewYearlySalesStatistics();
+                case 11 -> {
+                    return;
+                }
+                default -> System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void performCustomerAnalysis() throws Exception {
+        statisticsAnalysisService.performCustomerAnalysis();
+        System.out.println("고객 분석이 완료되었습니다.");
+    }
+
+    private static void performProductAnalysis() throws Exception {
+        statisticsAnalysisService.performProductAnalysis();
+        System.out.println("상품 분석이 완료되었습니다.");
+    }
+
+    private static void performDailySalesStatistics() throws Exception {
+        statisticsAnalysisService.performDailySalesStatistics();
+        System.out.println("일별 매출 통계 분석이 완료되었습니다.");
+    }
+
+    private static void performMonthlySalesStatistics() throws Exception {
+        statisticsAnalysisService.performMonthlySalesStatistics();
+        System.out.println("월별 매출 통계 분석이 완료되었습니다.");
+    }
+
+    private static void performYearlySalesStatistics() throws Exception {
+        statisticsAnalysisService.performYearlySalesStatistics();
+        System.out.println("연도별 매출 통계 분석이 완료되었습니다.");
+    }
+
+    private static void viewCustomerAnalysis() throws Exception {
+        List<CustomerAnalysis> analyses = statisticsAnalysisService.analyzeCustomers();
+        for (CustomerAnalysis analysis : analyses) {
+            System.out.println(analysis);
+        }
+    }
+
+    private static void viewProductAnalysis() throws Exception {
+        List<ProductAnalysis> analyses = statisticsAnalysisService.analyzeProducts();
+        for (ProductAnalysis analysis : analyses) {
+            System.out.println(analysis);
+        }
+    }
+
+    private static void viewDailySalesStatistics() throws Exception {
+        List<SalesStatistics> statistics = statisticsAnalysisService.getDailySalesStatistics();
+        for (SalesStatistics stat : statistics) {
+            System.out.println(stat);
+        }
+    }
+
+    private static void viewMonthlySalesStatistics() throws Exception {
+        List<MonthlySalesStatistics> statistics = statisticsAnalysisService.getMonthlySalesStatistics();
+        for (MonthlySalesStatistics stat : statistics) {
+            System.out.println(stat);
+        }
+    }
+
+    private static void viewYearlySalesStatistics() throws Exception {
+        List<YearlySalesStatistics> statistics = statisticsAnalysisService.getYearlySalesStatistics();
+        for (YearlySalesStatistics stat : statistics) {
+            System.out.println(stat);
+        }
     }
 
 }
