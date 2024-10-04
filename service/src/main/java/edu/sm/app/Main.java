@@ -52,8 +52,9 @@ public class Main {
             System.out.println("3. 장바구니");
             System.out.println("4. 위시리스트");
             System.out.println("5. 상품 리뷰");
-            System.out.println("6. 로그아웃");
-            System.out.println("7. 종료");
+            System.out.println("6. 문의 등록");
+            System.out.println("7. 로그아웃");
+            System.out.println("8. 종료");
             System.out.print("선택: ");
 
             int choice = getChoice(6);
@@ -64,12 +65,13 @@ public class Main {
                     case 3 -> handleCartMenu();
                     case 4 -> handleWishlistMenu();
                     case 5 -> Utils.writeReview(loggedInCustomer);
-                    case 6 -> {
+                    case 6 -> Utils.writeInquiry(loggedInCustomer);
+                    case 7 -> {
                         System.out.println("로그아웃 되었습니다.");
                         loggedInCustomer = null;
                         return;
                     }
-                    case 7 -> {
+                    case 8 -> {
                         System.out.println("프로그램을 종료합니다.");
                         System.exit(0);
                     }

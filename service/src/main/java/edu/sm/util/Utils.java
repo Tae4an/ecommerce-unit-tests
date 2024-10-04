@@ -223,6 +223,27 @@ public class Utils {
         System.out.println("리뷰가 작성되었습니다.");
     }
 
+    public static void writeInquiry(Customer customer) throws Exception {
+        System.out.print("문의할 상품 ID를 입력하세요: ");
+        Integer productId = Integer.parseInt(scanner.nextLine());
+        System.out.print("제목: ");
+        String title = scanner.nextLine();
+        System.out.print("내용: ");
+        String content = scanner.nextLine();
+
+        Board inquiry = Board.builder()
+                .custId(customer.getCustId())
+                .productId(productId)
+                .ntype("Q")
+                .title(title)
+                .regDate(new Date())
+                .content(content)
+                .build();
+
+        boardService.add(inquiry);
+        System.out.println("문의가 등록되었습니다.");
+    }
+
     public static void checkMileage(Customer customer) throws Exception {
         Mileage mileage = mileageService.get(customer.getCustId());
         System.out.println("현재 마일리지: " + mileage.getBalance());
