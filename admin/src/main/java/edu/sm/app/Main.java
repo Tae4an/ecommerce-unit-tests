@@ -8,23 +8,32 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("관리자 애플리케이션을 실행합니다.");
+        System.out.println("관리자 애플리케이션에 오신 것을 환영합니다!");
 
         while (true) {
             try {
                 displayMainMenu();
                 int choice = scanner.nextInt();
-                scanner.nextLine(); // 버퍼 비우기
+                scanner.nextLine();
 
                 switch (choice) {
-                    case 1 -> Utils.manageCustomers();
-                    case 2 -> Utils.manageAddresses();
-                    case 3 -> Utils.manageProducts();
-                    case 4 -> {
-                        System.out.println("프로그램을 종료합니다..");
+                    case 1:
+                        Utils.manageCustomers();
+                        break;
+                    case 2:
+                        Utils.manageAddresses();
+                        break;
+                    case 3:
+                        Utils.manageProducts();
+                        break;
+                    case 4:
+                        Utils.manageCategories();
+                        break;
+                    case 5:
+                        System.out.println("프로그램을 종료합니다. 감사합니다!");
                         return;
-                    }
-                    default -> System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
+                    default:
+                        System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
                 }
             } catch (Exception e) {
                 System.out.println("오류가 발생했습니다: " + e.getMessage());
@@ -40,7 +49,8 @@ public class Main {
         System.out.println("1. 회원 관리");
         System.out.println("2. 배송지 관리");
         System.out.println("3. 상품 관리");
-        System.out.println("4. 종료");
+        System.out.println("4. 카테고리 관리");
+        System.out.println("5. 종료");
         System.out.print("메뉴를 선택하세요: ");
     }
 }

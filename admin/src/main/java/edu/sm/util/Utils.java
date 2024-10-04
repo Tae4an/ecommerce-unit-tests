@@ -1,9 +1,11 @@
 package edu.sm.util;
 
 import edu.sm.dto.Address;
+import edu.sm.dto.Category;
 import edu.sm.dto.Customer;
 import edu.sm.dto.Product;
 import edu.sm.service.AddressService;
+import edu.sm.service.CategoryService;
 import edu.sm.service.CustomerService;
 import edu.sm.service.ProductService;
 
@@ -15,6 +17,7 @@ public class Utils {
     private static final CustomerService customerService = new CustomerService();
     private static final AddressService addressService = new AddressService();
     private static final ProductService productService = new ProductService();
+    private static final CategoryService categoryService = new CategoryService();
     private static final Scanner scanner = new Scanner(System.in);
 
 
@@ -529,6 +532,144 @@ public class Utils {
         }
 
         System.out.println("-----------------------------------------------------------------------------------------------------------");
+    }
+
+
+    /**
+     * --------------------------- Address ---------------------------
+     */
+
+    public static void manageCategories() throws Exception {
+        while (true) {
+            System.out.println("\n===== 카테고리 관리 =====");
+            System.out.println("1. 카테고리 추가");
+            System.out.println("2. 카테고리 조회");
+            System.out.println("3. 카테고리 수정");
+            System.out.println("4. 카테고리 삭제");
+            System.out.println("5. 모든 카테고리 조회");
+            System.out.println("6. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addCategory();
+                    break;
+                case 2:
+                    viewCategory();
+                    break;
+                case 3:
+                    updateCategory();
+                    break;
+                case 4:
+                    deleteCategory();
+                    break;
+                case 5:
+                    viewAllCategories();
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void addCategory() throws Exception {
+        System.out.println("\n----- 카테고리 추가 -----");
+        System.out.print("상위 카테고리 ID (없으면 0): ");
+        int categoryId2 = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("카테고리명: ");
+        String name = scanner.nextLine();
+
+        Category category = Category.builder()
+                .categoryId2(categoryId2)
+                .name(name)
+                .build();
+
+        Category addedCategory = categoryService.add(category);
+        System.out.println("카테고리가 추가되었습니다. ID: " + addedCategory.getCategoryId());
+    }
+
+    private static void viewCategory() throws Exception {
+        System.out.println("\n----- 카테고리 조회 -----");
+        System.out.print("조회할 카테고리 ID: ");
+        int categoryId = scanner.nextInt();
+        scanner.nextLine();
+
+        Category category = categoryService.get(categoryId);
+        if (category != null) {
+            // 카테고리 상세 정보 출력
+            System.out.println("\n===== 카테고리 정보 =====");
+            System.out.printf("카테고리 ID: %d%n", category.getCategoryId());
+            System.out.printf("서브 카테고리 ID: %d%n", category.getCategoryId2());
+            System.out.printf("카테고리 이름: %s%n", category.getName() != null ? category.getName() : "N/A");
+        } else {
+            System.out.println("해당 ID의 카테고리가 없습니다.");
+        }
+    }
+
+
+    private static void updateCategory() throws Exception {
+        System.out.println("\n----- 카테고리 수정 -----");
+        System.out.print("수정할 카테고리 ID: ");
+        int categoryId = scanner.nextInt();
+        scanner.nextLine();
+
+        Category category = categoryService.get(categoryId);
+        if (category == null) {
+            System.out.println("해당 ID의 카테고리가 없습니다.");
+            return;
+        }
+
+        System.out.print("새 상위 카테고리 ID (현재: " + category.getCategoryId2() + "): ");
+        String newCategoryId2 = scanner.nextLine();
+        if (!newCategoryId2.isEmpty()) {
+            category.setCategoryId2(Integer.parseInt(newCategoryId2));
+        }
+
+        System.out.print("새 카테고리명 (현재: " + category.getName() + "): ");
+        String newName = scanner.nextLine();
+        if (!newName.isEmpty()) {
+            category.setName(newName);
+        }
+
+        categoryService.modify(category);
+        System.out.println("카테고리 정보가 수정되었습니다.");
+    }
+
+    private static void deleteCategory() throws Exception {
+        System.out.println("\n----- 카테고리 삭제 -----");
+        System.out.print("삭제할 카테고리 ID: ");
+        int categoryId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (categoryService.remove(categoryId)) {
+            System.out.println("카테고리가 삭제되었습니다.");
+        } else {
+            System.out.println("카테고리 삭제에 실패했습니다.");
+        }
+    }
+
+    private static void viewAllCategories() throws Exception {
+        System.out.println("\n----- 모든 카테고리 조회 -----");
+        List<Category> categories = categoryService.get();
+
+        System.out.println("--------------------------------------------------------");
+        System.out.printf("%-15s %-15s %-30s%n", "Category ID", "SubCategory ID", "Category Name");
+        System.out.println("--------------------------------------------------------");
+
+        for (Category category : categories) {
+            System.out.printf("%-15d %-15d %-30s%n",
+                    category.getCategoryId(),
+                    category.getCategoryId2(),
+                    category.getName() != null ? category.getName() : "N/A"
+            );
+        }
+
+        System.out.println("--------------------------------------------------------");
     }
 
 }
