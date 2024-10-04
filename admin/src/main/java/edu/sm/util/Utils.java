@@ -16,6 +16,8 @@ public class Utils {
     private static final BoardService boardService = new BoardService();
     private static final OrderService orderService = new OrderService();
     private static final OrderDetailService orderDetailService = new OrderDetailService();
+    private static final PaymentService paymentService = new PaymentService();
+
 
 
     /**
@@ -36,25 +38,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addCustomer();
-                    break;
-                case 2:
-                    viewCustomers();
-                    break;
-                case 3:
-                    updateCustomer();
-                    break;
-                case 4:
-                    deleteCustomer();
-                    break;
-                case 5:
-                    searchCustomers();
-                    break;
-                case 6:
+                case 1 -> addCustomer();
+                case 2 -> viewCustomers();
+                case 3 -> updateCustomer();
+                case 4 -> deleteCustomer();
+                case 5 -> searchCustomers();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -205,25 +197,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addAddress();
-                    break;
-                case 2:
-                    viewAddresses();
-                    break;
-                case 3:
-                    updateAddress();
-                    break;
-                case 4:
-                    deleteAddress();
-                    break;
-                case 5:
-                    setDefaultAddress();
-                    break;
-                case 6:
+                case 1 -> addAddress();
+                case 2 -> viewAddresses();
+                case 3 -> updateAddress();
+                case 4 -> deleteAddress();
+                case 5 -> setDefaultAddress();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -367,25 +349,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addProduct();
-                    break;
-                case 2:
-                    viewProduct();
-                    break;
-                case 3:
-                    updateProduct();
-                    break;
-                case 4:
-                    toggleProductStatus();
-                    break;
-                case 5:
-                    viewAllProducts();
-                    break;
-                case 6:
+                case 1 -> addProduct();
+                case 2 -> viewProduct();
+                case 3 -> updateProduct();
+                case 4 -> toggleProductStatus();
+                case 5 -> viewAllProducts();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -550,25 +522,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addCategory();
-                    break;
-                case 2:
-                    viewCategory();
-                    break;
-                case 3:
-                    updateCategory();
-                    break;
-                case 4:
-                    deleteCategory();
-                    break;
-                case 5:
-                    viewAllCategories();
-                    break;
-                case 6:
+                case 1 -> addCategory();
+                case 2 -> viewCategory();
+                case 3 -> updateCategory();
+                case 4 -> deleteCategory();
+                case 5 -> viewAllCategories();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -689,25 +651,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addBoard();
-                    break;
-                case 2:
-                    viewBoard();
-                    break;
-                case 3:
-                    updateBoard();
-                    break;
-                case 4:
-                    deleteBoard();
-                    break;
-                case 5:
-                    viewAllBoards();
-                    break;
-                case 6:
+                case 1 -> addBoard();
+                case 2 -> viewBoard();
+                case 3 -> updateBoard();
+                case 4 -> deleteBoard();
+                case 5 -> viewAllBoards();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -868,28 +820,16 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addOrder();
-                    break;
-                case 2:
-                    viewOrder();
-                    break;
-                case 3:
-                    updateOrder();
-                    break;
-                case 4:
-                    deleteOrder();
-                    break;
-                case 5:
-                    viewAllOrders();
-                    break;
-                case 6:
-                    manageOrderDetails();
-                    break;
-                case 7:
+                case 1 -> addOrder();
+                case 2 -> viewOrder();
+                case 3 -> updateOrder();
+                case 4 -> deleteOrder();
+                case 5 -> viewAllOrders();
+                case 6 -> manageOrderDetails();
+                case 7 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -1048,25 +988,15 @@ public class Utils {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    addOrderDetail();
-                    break;
-                case 2:
-                    viewOrderDetail();
-                    break;
-                case 3:
-                    updateOrderDetail();
-                    break;
-                case 4:
-                    deleteOrderDetail();
-                    break;
-                case 5:
-                    viewAllOrderDetails();
-                    break;
-                case 6:
+                case 1 -> addOrderDetail();
+                case 2 -> viewOrderDetail();
+                case 3 -> updateOrderDetail();
+                case 4 -> deleteOrderDetail();
+                case 5 -> viewAllOrderDetails();
+                case 6 -> {
                     return;
-                default:
-                    System.out.println("잘못된 선택입니다.");
+                }
+                default -> System.out.println("잘못된 선택입니다.");
             }
         }
     }
@@ -1178,6 +1108,144 @@ public class Utils {
         }
 
         System.out.println("----------------------------------------------------------------------------------------");
+    }
+
+
+
+    /**
+     * --------------------------- Payment ---------------------------
+     */
+
+    public static void managePayments() throws Exception {
+        while (true) {
+            System.out.println("\n===== 결제 관리 =====");
+            System.out.println("1. 결제 추가");
+            System.out.println("2. 결제 조회");
+            System.out.println("3. 결제 수정");
+            System.out.println("4. 결제 삭제");
+            System.out.println("5. 모든 결제 조회");
+            System.out.println("6. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> addPayment();
+                case 2 -> viewPayment();
+                case 3 -> updatePayment();
+                case 4 -> deletePayment();
+                case 5 -> viewAllPayments();
+                case 6 -> {
+                    return;
+                }
+                default -> System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void addPayment() throws Exception {
+        System.out.println("\n----- 결제 추가 -----");
+        System.out.print("주문 ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("결제 금액: ");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("결제 방법: ");
+        String method = scanner.nextLine();
+
+        Payment payment = Payment.builder()
+                .orderId(orderId)
+                .price(price)
+                .method(method)
+                .payDate(new Date())
+                .build();
+
+        Payment addedPayment = paymentService.add(payment);
+        System.out.println("결제가 추가되었습니다. ID: " + addedPayment.getPaymentId());
+    }
+
+    private static void viewPayment() throws Exception {
+        System.out.println("\n----- 결제 조회 -----");
+        System.out.print("조회할 결제 ID: ");
+        int paymentId = scanner.nextInt();
+        scanner.nextLine();
+
+        Payment payment = paymentService.get(paymentId);
+        if (payment != null) {
+            System.out.println("\n===== 결제 정보 =====");
+            System.out.printf("결제 ID: %d%n", payment.getPaymentId());
+            System.out.printf("주문 ID: %d%n", payment.getOrderId());
+            System.out.printf("금액: %,d원%n", payment.getPrice());
+            System.out.printf("결제 수단: %s%n", payment.getMethod() != null ? payment.getMethod() : "N/A");
+            System.out.printf("결제 날짜: %tF%n", payment.getPayDate() != null ? payment.getPayDate() : new Date());
+        } else {
+            System.out.println("해당 ID의 결제가 없습니다.");
+        }
+    }
+
+
+    private static void updatePayment() throws Exception {
+        System.out.println("\n----- 결제 수정 -----");
+        System.out.print("수정할 결제 ID: ");
+        int paymentId = scanner.nextInt();
+        scanner.nextLine();
+
+        Payment payment = paymentService.get(paymentId);
+        if (payment == null) {
+            System.out.println("해당 ID의 결제가 없습니다.");
+            return;
+        }
+
+        System.out.print("새 결제 금액 (현재: " + payment.getPrice() + "): ");
+        String newPrice = scanner.nextLine();
+        if (!newPrice.isEmpty()) {
+            payment.setPrice(Integer.parseInt(newPrice));
+        }
+
+        System.out.print("새 결제 방법 (현재: " + payment.getMethod() + "): ");
+        String newMethod = scanner.nextLine();
+        if (!newMethod.isEmpty()) {
+            payment.setMethod(newMethod);
+        }
+
+        paymentService.modify(payment);
+        System.out.println("결제 정보가 수정되었습니다.");
+    }
+
+    private static void deletePayment() throws Exception {
+        System.out.println("\n----- 결제 삭제 -----");
+        System.out.print("삭제할 결제 ID: ");
+        int paymentId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (paymentService.remove(paymentId)) {
+            System.out.println("결제가 삭제되었습니다.");
+        } else {
+            System.out.println("결제 삭제에 실패했습니다.");
+        }
+    }
+
+    private static void viewAllPayments() throws Exception {
+        System.out.println("\n----- 모든 결제 조회 -----");
+        List<Payment> payments = paymentService.get();
+
+        System.out.println("--------------------------------------------------------------------------------");
+        System.out.printf("%-10s %-10s %-15s %-10s %-15s%n",
+                "Payment ID", "Order ID", "Price", "Method", "Pay Date");
+        System.out.println("--------------------------------------------------------------------------------");
+
+        for (Payment payment : payments) {
+            System.out.printf("%-10d %-10d %,15d %-10s %-15tF%n",
+                    payment.getPaymentId(),
+                    payment.getOrderId(),
+                    payment.getPrice(),
+                    payment.getMethod() != null ? payment.getMethod() : "N/A",
+                    payment.getPayDate() != null ? payment.getPayDate() : new Date()
+            );
+        }
+
+        System.out.println("--------------------------------------------------------------------------------");
     }
 
 }

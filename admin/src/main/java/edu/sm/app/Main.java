@@ -17,29 +17,18 @@ public class Main {
                 scanner.nextLine();
 
                 switch (choice) {
-                    case 1:
-                        Utils.manageCustomers();
-                        break;
-                    case 2:
-                        Utils.manageAddresses();
-                        break;
-                    case 3:
-                        Utils.manageProducts();
-                        break;
-                    case 4:
-                        Utils.manageCategories();
-                        break;
-                    case 5:
-                        Utils.manageBoards();
-                        break;
-                    case 6:
-                        Utils.manageOrders();
-                        break;
-                    case 7:
+                    case 1 -> Utils.manageCustomers();
+                    case 2 -> Utils.manageAddresses();
+                    case 3 -> Utils.manageProducts();
+                    case 4 -> Utils.manageCategories();
+                    case 5 -> Utils.manageBoards();
+                    case 6 -> Utils.manageOrders();
+                    case 7 -> Utils.managePayments();
+                    case 8 -> {
                         System.out.println("프로그램을 종료합니다..");
                         return;
-                    default:
-                        System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
+                    }
+                    default -> System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
                 }
             } catch (Exception e) {
                 System.out.println("오류가 발생했습니다: " + e.getMessage());
@@ -58,7 +47,8 @@ public class Main {
         System.out.println("4. 카테고리 관리");
         System.out.println("5. 게시판 관리");
         System.out.println("6. 주문 관리");
-        System.out.println("7. 종료");
+        System.out.println("7. 결제 관리");
+        System.out.println("8. 종료");
         System.out.print("메뉴를 선택하세요: ");
     }
 }
