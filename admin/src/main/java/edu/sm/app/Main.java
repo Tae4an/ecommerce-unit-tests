@@ -30,6 +30,9 @@ public class Main {
                         Utils.manageCategories();
                         break;
                     case 5:
+                        Utils.manageBoards();
+                        break;
+                    case 6:
                         System.out.println("프로그램을 종료합니다. 감사합니다!");
                         return;
                     default:
@@ -48,9 +51,10 @@ public class Main {
         System.out.println("==============================");
         System.out.println("1. 회원 관리");
         System.out.println("2. 배송지 관리");
-        System.out.println("3. 상품 관리");
+        System.out.println("3. 제품 관리");
         System.out.println("4. 카테고리 관리");
-        System.out.println("5. 종료");
+        System.out.println("5. 게시판 관리");
+        System.out.println("6. 종료");
         System.out.print("메뉴를 선택하세요: ");
     }
 }

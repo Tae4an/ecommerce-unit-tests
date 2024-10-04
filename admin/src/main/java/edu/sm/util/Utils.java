@@ -1,13 +1,7 @@
 package edu.sm.util;
 
-import edu.sm.dto.Address;
-import edu.sm.dto.Category;
-import edu.sm.dto.Customer;
-import edu.sm.dto.Product;
-import edu.sm.service.AddressService;
-import edu.sm.service.CategoryService;
-import edu.sm.service.CustomerService;
-import edu.sm.service.ProductService;
+import edu.sm.dto.*;
+import edu.sm.service.*;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +12,7 @@ public class Utils {
     private static final AddressService addressService = new AddressService();
     private static final ProductService productService = new ProductService();
     private static final CategoryService categoryService = new CategoryService();
+    private static final BoardService boardService = new BoardService();
     private static final Scanner scanner = new Scanner(System.in);
 
 
@@ -536,7 +531,7 @@ public class Utils {
 
 
     /**
-     * --------------------------- Address ---------------------------
+     * --------------------------- Category ---------------------------
      */
 
     public static void manageCategories() throws Exception {
@@ -670,6 +665,184 @@ public class Utils {
         }
 
         System.out.println("--------------------------------------------------------");
+    }
+
+
+
+    /**
+     * --------------------------- Board ---------------------------
+     */
+
+    public static void manageBoards() throws Exception {
+        while (true) {
+            System.out.println("\n===== 게시판 관리 =====");
+            System.out.println("1. 게시글 추가");
+            System.out.println("2. 게시글 조회");
+            System.out.println("3. 게시글 수정");
+            System.out.println("4. 게시글 삭제");
+            System.out.println("5. 모든 게시글 조회");
+            System.out.println("6. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addBoard();
+                    break;
+                case 2:
+                    viewBoard();
+                    break;
+                case 3:
+                    updateBoard();
+                    break;
+                case 4:
+                    deleteBoard();
+                    break;
+                case 5:
+                    viewAllBoards();
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void addBoard() throws Exception {
+        System.out.println("\n----- 게시글 추가 -----");
+        System.out.print("고객 ID: ");
+        int custId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("제품 ID (없으면 0): ");
+        int productId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("게시글 유형 (notice/review): ");
+        String ntype = scanner.nextLine();
+        System.out.print("제목: ");
+        String title = scanner.nextLine();
+        System.out.print("내용: ");
+        String content = scanner.nextLine();
+        System.out.print("이미지 URL (없으면 엔터): ");
+        String img = scanner.nextLine();
+        System.out.print("평점 (1-5, 리뷰가 아니면 0): ");
+        int rate = scanner.nextInt();
+        scanner.nextLine();
+
+        Board board = Board.builder()
+                .custId(custId)
+                .productId(productId == 0 ? null : productId)
+                .ntype(ntype)
+                .title(title)
+                .regDate(new Date())
+                .content(content)
+                .img(img.isEmpty() ? null : img)
+                .rate(rate)
+                .build();
+
+        Board addedBoard = boardService.add(board);
+        System.out.println("게시글이 추가되었습니다. ID: " + addedBoard.getBoardId());
+    }
+
+    private static void viewBoard() throws Exception {
+        System.out.println("\n----- 게시글 조회 -----");
+        System.out.print("조회할 게시글 ID: ");
+        int boardId = scanner.nextInt();
+        scanner.nextLine();
+
+        Board board = boardService.get(boardId);
+        if (board != null) {
+            // 게시글 상세 정보 출력
+            System.out.println("\n===== 게시글 정보 =====");
+            System.out.printf("게시글 ID: %d%n", board.getBoardId());
+            System.out.printf("작성자 ID: %d%n", board.getCustId());
+            System.out.printf("상품 ID: %d%n", board.getProductId() != null ? board.getProductId() : 0);
+            System.out.printf("게시글 유형: %s%n", board.getNtype() != null ? board.getNtype() : "N/A");
+            System.out.printf("제목: %s%n", board.getTitle() != null ? board.getTitle() : "N/A");
+            System.out.printf("등록일: %tF%n", board.getRegDate() != null ? board.getRegDate() : new Date());
+            System.out.printf("내용: %s%n", board.getContent() != null ? board.getContent() : "N/A");
+            System.out.printf("이미지: %s%n", board.getImg() != null ? board.getImg() : "N/A");
+            System.out.printf("평점: %d%n", board.getRate() != null ? board.getRate() : 0);
+        } else {
+            System.out.println("해당 ID의 게시글이 없습니다.");
+        }
+    }
+
+    private static void updateBoard() throws Exception {
+        System.out.println("\n----- 게시글 수정 -----");
+        System.out.print("수정할 게시글 ID: ");
+        int boardId = scanner.nextInt();
+        scanner.nextLine();
+
+        Board board = boardService.get(boardId);
+        if (board == null) {
+            System.out.println("해당 ID의 게시글이 없습니다.");
+            return;
+        }
+
+        System.out.print("새 제목 (현재: " + board.getTitle() + "): ");
+        String newTitle = scanner.nextLine();
+        if (!newTitle.isEmpty()) {
+            board.setTitle(newTitle);
+        }
+
+        System.out.print("새 내용 (현재: " + board.getContent() + "): ");
+        String newContent = scanner.nextLine();
+        if (!newContent.isEmpty()) {
+            board.setContent(newContent);
+        }
+
+        System.out.print("새 이미지 URL (현재: " + board.getImg() + "): ");
+        String newImg = scanner.nextLine();
+        if (!newImg.isEmpty()) {
+            board.setImg(newImg);
+        }
+
+        System.out.print("새 평점 (현재: " + board.getRate() + "): ");
+        String newRate = scanner.nextLine();
+        if (!newRate.isEmpty()) {
+            board.setRate(Integer.parseInt(newRate));
+        }
+
+        boardService.modify(board);
+        System.out.println("게시글 정보가 수정되었습니다.");
+    }
+
+    private static void deleteBoard() throws Exception {
+        System.out.println("\n----- 게시글 삭제 -----");
+        System.out.print("삭제할 게시글 ID: ");
+        int boardId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (boardService.remove(boardId)) {
+            System.out.println("게시글이 삭제되었습니다.");
+        } else {
+            System.out.println("게시글 삭제에 실패했습니다.");
+        }
+    }
+
+    private static void viewAllBoards() throws Exception {
+        System.out.println("\n----- 모든 게시글 조회 -----");
+        List<Board> boards = boardService.get();
+
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-10s %-10s %-15s %-20s %-15s %-10s%n",
+                "Board ID", "Cust ID", "Product ID", "Title", "Reg Date", "Rate");
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+
+        for (Board board : boards) {
+            System.out.printf("%-10d %-10d %-15d %-20s %-15tF %-10d%n",
+                    board.getBoardId(),
+                    board.getCustId(),
+                    board.getProductId() != null ? board.getProductId() : 0,
+                    board.getTitle() != null ? board.getTitle() : "N/A",
+                    board.getRegDate() != null ? board.getRegDate() : new Date(),
+                    board.getRate() != null ? board.getRate() : 0
+            );
+        }
+
+        System.out.println("------------------------------------------------------------------------------------------------------------");
     }
 
 }
