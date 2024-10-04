@@ -24,7 +24,8 @@ public class Main {
                     case 5 -> Utils.manageBoards();
                     case 6 -> Utils.manageOrders();
                     case 7 -> Utils.managePayments();
-                    case 8 -> {
+                    case 8 -> Utils.manageStatisticsAnalysis();
+                    case 9 -> {
                         System.out.println("프로그램을 종료합니다..");
                         return;
                     }
@@ -48,7 +49,8 @@ public class Main {
         System.out.println("5. 게시판 관리");
         System.out.println("6. 주문 관리");
         System.out.println("7. 결제 관리");
-        System.out.println("8. 종료");
+        System.out.println("8. 통계 분석");
+        System.out.println("9. 종료");
         System.out.print("메뉴를 선택하세요: ");
     }
 }
