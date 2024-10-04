@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Utils {
+    private static final Scanner scanner = new Scanner(System.in);
     private static final CustomerService customerService = new CustomerService();
     private static final AddressService addressService = new AddressService();
     private static final ProductService productService = new ProductService();
     private static final CategoryService categoryService = new CategoryService();
     private static final BoardService boardService = new BoardService();
-    private static final Scanner scanner = new Scanner(System.in);
+    private static final OrderService orderService = new OrderService();
+    private static final OrderDetailService orderDetailService = new OrderDetailService();
 
 
     /**
@@ -843,6 +845,339 @@ public class Utils {
         }
 
         System.out.println("------------------------------------------------------------------------------------------------------------");
+    }
+
+
+
+    /**
+     * --------------------------- Order && OrderDetail ---------------------------
+     */
+
+    public static void manageOrders() throws Exception {
+        while (true) {
+            System.out.println("\n===== 주문 관리 =====");
+            System.out.println("1. 주문 추가");
+            System.out.println("2. 주문 조회");
+            System.out.println("3. 주문 수정");
+            System.out.println("4. 주문 삭제");
+            System.out.println("5. 모든 주문 조회");
+            System.out.println("6. 주문 상세 관리");
+            System.out.println("7. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addOrder();
+                    break;
+                case 2:
+                    viewOrder();
+                    break;
+                case 3:
+                    updateOrder();
+                    break;
+                case 4:
+                    deleteOrder();
+                    break;
+                case 5:
+                    viewAllOrders();
+                    break;
+                case 6:
+                    manageOrderDetails();
+                    break;
+                case 7:
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void addOrder() throws Exception {
+        System.out.println("\n----- 주문 추가 -----");
+        System.out.print("고객 ID: ");
+        int custId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("제품 수량: ");
+        int productCount = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("총 가격: ");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("수령인 이름: ");
+        String name = scanner.nextLine();
+        System.out.print("연락처: ");
+        String phone = scanner.nextLine();
+        System.out.print("주소1: ");
+        String address1 = scanner.nextLine();
+        System.out.print("주소2: ");
+        String address2 = scanner.nextLine();
+        System.out.print("우편번호: ");
+        String zipCode = scanner.nextLine();
+        System.out.print("요청사항: ");
+        String request = scanner.nextLine();
+        System.out.print("카드 정보: ");
+        String card = scanner.nextLine();
+        System.out.print("사용 마일리지: ");
+        int usedMileage = scanner.nextInt();
+        scanner.nextLine();
+
+        Order order = Order.builder()
+                .custId(custId)
+                .productCount(productCount)
+                .price(price)
+                .orderDate(new Date())
+                .name(name)
+                .phone(phone)
+                .address1(address1)
+                .address2(address2)
+                .zipCode(zipCode)
+                .request(request)
+                .card(card)
+                .usedMileage(usedMileage)
+                .build();
+
+        Order addedOrder = orderService.add(order);
+        System.out.println("주문이 추가되었습니다. ID: " + addedOrder.getOrderId());
+    }
+
+    private static void viewOrder() throws Exception {
+        System.out.println("\n----- 주문 조회 -----");
+        System.out.print("조회할 주문 ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+
+        Order order = orderService.get(orderId);
+        if (order != null) {
+            System.out.println("\n===== 주문 정보 =====");
+            System.out.printf("주문 ID: %d%n", order.getOrderId());
+            System.out.printf("고객 ID: %d%n", order.getCustId());
+            System.out.printf("제품 개수: %d%n", order.getProductCount());
+            System.out.printf("총 가격: %,d원%n", order.getPrice());
+            System.out.printf("주문 날짜: %tF%n", order.getOrderDate() != null ? order.getOrderDate() : new Date());
+            System.out.printf("받는 사람: %s%n", order.getName() != null ? order.getName() : "N/A");
+            System.out.printf("전화번호: %s%n", order.getPhone() != null ? order.getPhone() : "N/A");
+            System.out.printf("주소: %s, %s, %s%n", order.getAddress1(), order.getAddress2(), order.getZipCode());
+            System.out.printf("요청사항: %s%n", order.getRequest() != null ? order.getRequest() : "N/A");
+            System.out.printf("카드: %s%n", order.getCard() != null ? order.getCard() : "N/A");
+            System.out.printf("사용한 마일리지: %d%n", order.getUsedMileage() != null ? order.getUsedMileage() : 0);
+        } else {
+            System.out.println("해당 ID의 주문이 없습니다.");
+        }
+    }
+
+
+    private static void updateOrder() throws Exception {
+        System.out.println("\n----- 주문 수정 -----");
+        System.out.print("수정할 주문 ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+
+        Order order = orderService.get(orderId);
+        if (order == null) {
+            System.out.println("해당 ID의 주문이 없습니다.");
+            return;
+        }
+
+        System.out.print("새 수령인 이름 (현재: " + order.getName() + "): ");
+        String newName = scanner.nextLine();
+        if (!newName.isEmpty()) {
+            order.setName(newName);
+        }
+
+        System.out.print("새 연락처 (현재: " + order.getPhone() + "): ");
+        String newPhone = scanner.nextLine();
+        if (!newPhone.isEmpty()) {
+            order.setPhone(newPhone);
+        }
+
+        orderService.modify(order);
+        System.out.println("주문 정보가 수정되었습니다.");
+    }
+
+    private static void deleteOrder() throws Exception {
+        System.out.println("\n----- 주문 삭제 -----");
+        System.out.print("삭제할 주문 ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (orderService.remove(orderId)) {
+            System.out.println("주문이 삭제되었습니다.");
+        } else {
+            System.out.println("주문 삭제에 실패했습니다.");
+        }
+    }
+
+    private static void viewAllOrders() throws Exception {
+        System.out.println("\n----- 모든 주문 조회 -----");
+        List<Order> orders = orderService.get();
+
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%-10s %-10s %-15s %-10s %-15s %-10s %-15s%n",
+                "Order ID", "Cust ID", "Product Count", "Price", "Order Date", "Name", "Phone");
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+
+        for (Order order : orders) {
+            System.out.printf("%-10d %-10d %-15d %,10d %-15tF %-10s %-15s%n",
+                    order.getOrderId(),
+                    order.getCustId(),
+                    order.getProductCount(),
+                    order.getPrice(),
+                    order.getOrderDate() != null ? order.getOrderDate() : new Date(),
+                    order.getName() != null ? order.getName() : "N/A",
+                    order.getPhone() != null ? order.getPhone() : "N/A"
+            );
+        }
+
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+    }
+
+
+    private static void manageOrderDetails() throws Exception {
+        while (true) {
+            System.out.println("\n===== 주문 상세 관리 =====");
+            System.out.println("1. 주문 상세 추가");
+            System.out.println("2. 주문 상세 조회");
+            System.out.println("3. 주문 상세 수정");
+            System.out.println("4. 주문 상세 삭제");
+            System.out.println("5. 모든 주문 상세 조회");
+            System.out.println("6. 뒤로 가기");
+            System.out.print("선택: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addOrderDetail();
+                    break;
+                case 2:
+                    viewOrderDetail();
+                    break;
+                case 3:
+                    updateOrderDetail();
+                    break;
+                case 4:
+                    deleteOrderDetail();
+                    break;
+                case 5:
+                    viewAllOrderDetails();
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("잘못된 선택입니다.");
+            }
+        }
+    }
+
+    private static void addOrderDetail() throws Exception {
+        System.out.println("\n----- 주문 상세 추가 -----");
+        System.out.print("제품 ID: ");
+        int productId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("주문 ID: ");
+        int orderId = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("가격: ");
+        int price = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("수량: ");
+        int count = scanner.nextInt();
+        scanner.nextLine();
+
+        OrderDetail orderDetail = OrderDetail.builder()
+                .productId(productId)
+                .orderId(orderId)
+                .price(price)
+                .count(count)
+                .build();
+
+        OrderDetail addedOrderDetail = orderDetailService.add(orderDetail);
+        System.out.println("주문 상세가 추가되었습니다. ID: " + addedOrderDetail.getOrderDetailId());
+    }
+
+    private static void viewOrderDetail() throws Exception {
+        System.out.println("\n----- 주문 상세 조회 -----");
+        System.out.print("조회할 주문 상세 ID: ");
+        int orderDetailId = scanner.nextInt();
+        scanner.nextLine();
+
+        OrderDetail orderDetail = orderDetailService.get(orderDetailId);
+        if (orderDetail != null) {
+            System.out.println("\n===== 주문 상세 정보 =====");
+            System.out.printf("주문 상세 ID: %d%n", orderDetail.getOrderDetailId());
+            System.out.printf("제품 ID: %d%n", orderDetail.getProductId());
+            System.out.printf("주문 ID: %d%n", orderDetail.getOrderId());
+            System.out.printf("가격: %,d원%n", orderDetail.getPrice());
+            System.out.printf("수량: %d%n", orderDetail.getCount());
+        } else {
+            System.out.println("해당 ID의 주문 상세가 없습니다.");
+        }
+    }
+
+
+    private static void updateOrderDetail() throws Exception {
+        System.out.println("\n----- 주문 상세 수정 -----");
+        System.out.print("수정할 주문 상세 ID: ");
+        int orderDetailId = scanner.nextInt();
+        scanner.nextLine();
+
+        OrderDetail orderDetail = orderDetailService.get(orderDetailId);
+        if (orderDetail == null) {
+            System.out.println("해당 ID의 주문 상세가 없습니다.");
+            return;
+        }
+
+        System.out.print("새 가격 (현재: " + orderDetail.getPrice() + "): ");
+        String newPrice = scanner.nextLine();
+        if (!newPrice.isEmpty()) {
+            orderDetail.setPrice(Integer.parseInt(newPrice));
+        }
+
+        System.out.print("새 수량 (현재: " + orderDetail.getCount() + "): ");
+        String newCount = scanner.nextLine();
+        if (!newCount.isEmpty()) {
+            orderDetail.setCount(Integer.parseInt(newCount));
+        }
+
+        orderDetailService.modify(orderDetail);
+        System.out.println("주문 상세 정보가 수정되었습니다.");
+    }
+
+    private static void deleteOrderDetail() throws Exception {
+        System.out.println("\n----- 주문 상세 삭제 -----");
+        System.out.print("삭제할 주문 상세 ID: ");
+        int orderDetailId = scanner.nextInt();
+        scanner.nextLine();
+
+        if (orderDetailService.remove(orderDetailId)) {
+            System.out.println("주문 상세가 삭제되었습니다.");
+        } else {
+            System.out.println("주문 상세 삭제에 실패했습니다.");
+        }
+    }
+
+    private static void viewAllOrderDetails() throws Exception {
+        System.out.println("\n----- 모든 주문 상세 조회 -----");
+        List<OrderDetail> orderDetails = orderDetailService.get();
+
+        System.out.println("----------------------------------------------------------------------------------------");
+        System.out.printf("%-15s %-15s %-15s %-10s %-10s%n",
+                "Order Detail ID", "Product ID", "Order ID", "Price", "Count");
+        System.out.println("----------------------------------------------------------------------------------------");
+
+        for (OrderDetail orderDetail : orderDetails) {
+            System.out.printf("%-15d %-15d %-15d %,10d %-10d%n",
+                    orderDetail.getOrderDetailId(),
+                    orderDetail.getProductId(),
+                    orderDetail.getOrderId(),
+                    orderDetail.getPrice(),
+                    orderDetail.getCount()
+            );
+        }
+
+        System.out.println("----------------------------------------------------------------------------------------");
     }
 
 }

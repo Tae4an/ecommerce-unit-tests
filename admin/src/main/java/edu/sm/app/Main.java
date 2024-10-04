@@ -8,7 +8,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("관리자 애플리케이션에 오신 것을 환영합니다!");
+        System.out.println("관리자 애플리케이션을 실행합니다.");
 
         while (true) {
             try {
@@ -33,7 +33,10 @@ public class Main {
                         Utils.manageBoards();
                         break;
                     case 6:
-                        System.out.println("프로그램을 종료합니다. 감사합니다!");
+                        Utils.manageOrders();
+                        break;
+                    case 7:
+                        System.out.println("프로그램을 종료합니다..");
                         return;
                     default:
                         System.out.println("잘못된 선택입니다. 다시 선택해주세요.");
@@ -51,10 +54,11 @@ public class Main {
         System.out.println("==============================");
         System.out.println("1. 회원 관리");
         System.out.println("2. 배송지 관리");
-        System.out.println("3. 제품 관리");
+        System.out.println("3. 상품 관리");
         System.out.println("4. 카테고리 관리");
         System.out.println("5. 게시판 관리");
-        System.out.println("6. 종료");
+        System.out.println("6. 주문 관리");
+        System.out.println("7. 종료");
         System.out.print("메뉴를 선택하세요: ");
     }
 }
